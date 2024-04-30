@@ -14,8 +14,7 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 from gradio_client import Client
 
-# Set API Key
-open_key = st.secrets['key_a']
+
 
 ###helll00000"""
 
