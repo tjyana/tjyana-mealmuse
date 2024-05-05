@@ -309,6 +309,9 @@ def imagegen(title):
 
 '''-----------------------------------------------------------------------------------------------------------'''
 # check if score passes, regen if not
+
+###################
+# #version with capitalized keys
 def regen_function(recipes, scores, model):  ###<=== Function for evaluatimg if the score passes the threshold and regenerating if it doesn't
     """
     This evaluates whether the score of a recipe passes or fails the threshold.
@@ -317,11 +320,11 @@ def regen_function(recipes, scores, model):  ###<=== Function for evaluatimg if 
     final_recipes = {"Title": [], "Ingredients": [], "Instructions": []}
     threshold = 0.4
 
-    for title, ingredients, instructions in zip(recipes["Title"], recipes["Ingredients"], recipes["Instructions"]):
+    for title, ingredients, directions in zip(recipes["title"], recipes["ingredients"], recipes["directions"]):
         if scores[i] >= threshold:
             final_recipes["Title"].append(title)
             final_recipes["Ingredients"].append(ingredients)
-            final_recipes["Instructions"].append(instructions)
+            final_recipes["Instructions"].append(directions)
         else:
             n = 0
             tmp_recipe = {
@@ -352,6 +355,102 @@ def regen_function(recipes, scores, model):  ###<=== Function for evaluatimg if 
                 break  # Exit the outer loop to prevent an unending loop
 
     return final_recipes
+
+
+
+
+#######################
+# lower case keys
+# def regen_function(recipes, scores, model):
+#     final_recipes = {"title": [], "ingredients": [], "instructions": []}
+#     threshold = 0.4
+
+#     for title, ingredients, instructions in zip(recipes["title"], recipes["ingredients"], recipes["instructions"]):
+#         if scores[i] >= threshold:
+#             final_recipes["title"].append(title)
+#             final_recipes["ingredients"].append(ingredients)
+#             final_recipes["instructions"].append(instructions)
+#         else:
+#             n = 0
+#             tmp_recipe = {
+#                 "title": recipes["title"][i],
+#                 "ingredients": recipes["ingredients"][i],
+#                 "instructions": recipes["instructions"][i]
+#             }
+#             last_recipe = {
+#                 "title": recipes["title"][i],
+#                 "ingredients": recipes["ingredients"][i],
+#                 "instructions": recipes["instructions"][i]
+#             }
+#             while n < 3:
+#                 new_recipe = gptrecipe(tmp_recipe["ingredients"][0])
+#                 new_score = model.predict_proba(new_recipe["instructions"][0])
+#                 if new_score >= threshold:
+#                     final_recipes["title"].append(new_recipe["title"])
+#                     final_recipes["ingredients"].append(new_recipe["ingredients"])
+#                     final_recipes["instructions"].append(new_recipe["instructions"])
+#                     break
+#                 else:
+#                     last_recipe = new_recipe
+#                     n += 1
+#             else:
+#                 final_recipes["title"].append(last_recipe["title"])
+#                 final_recipes["ingredients"].append(last_recipe["ingredients"])
+#                 final_recipes["instructions"].append(last_recipe["instructions"])
+#                 break
+
+#     return final_recipes
+
+
+# #############################
+# # MOST RECENT but not running bc of the i
+# #############################
+# def regen_function(recipes, scores, model):
+#     final_recipes = {"title": [], "ingredients": [], "instructions": []}
+#     threshold = 0.4
+
+#     for recipe in recipes:
+#         title = recipe["title"]
+#         ingredients = recipe["ingredients"]
+#         instructions = recipe["directions"]
+
+#         if scores[i] >= threshold:
+#             final_recipes["title"].append(title)
+#             final_recipes["ingredients"].append(ingredients)
+#             final_recipes["instructions"].append(instructions)
+#         else:
+#             n = 0
+#             tmp_recipe = {
+#                 "title": title,
+#                 "ingredients": ingredients,
+#                 "instructions": instructions
+#             }
+#             last_recipe = {
+#                 "title": title,
+#                 "ingredients": ingredients,
+#                 "instructions": instructions
+#             }
+#             while n < 3:
+#                 new_recipe = gptrecipe(tmp_recipe["ingredients"])
+#                 new_score = model.predict_proba(new_recipe["instructions"])
+#                 if new_score >= threshold:
+#                     final_recipes["title"].append(new_recipe["title"])
+#                     final_recipes["ingredients"].append(new_recipe["ingredients"])
+#                     final_recipes["instructions"].append(new_recipe["instructions"])
+#                     break
+#                 else:
+#                     last_recipe = new_recipe
+#                     n += 1
+#             else:
+#                 final_recipes["title"].append(last_recipe["title"])
+#                 final_recipes["ingredients"].append(last_recipe["ingredients"])
+#                 final_recipes["instructions"].append(last_recipe["instructions"])
+#                 break
+
+#     return final_recipes
+
+
+##########################
 
 
 
