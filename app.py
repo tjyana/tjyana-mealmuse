@@ -1,5 +1,5 @@
 import streamlit as st
-from utils.functions import prompt_muse, get_recipe_info, final_recipes, find_top_3_groups, imagegen, combinations_of_two, data_query, final_recipes, muse_comb, recipe_generator, convert_to_dictionary, image_generator
+from utils.functions import prompt_muse, get_recipe_info, final_recipes, find_top_3_groups, imagegen, combinations_of_two, data_query, final_recipes, muse_comb, recipe_generator, convert_to_dictionary, image_generator, regen_function
 import pandas as pd
 import pickle
 
@@ -318,12 +318,12 @@ if st.session_state['page3']:
     # PSEUDO CODE
     # recipe = recipe_generator(st.session_state['scored_ingredients']) > recipe (list)
     # recipe_dicts = convert_to_dictionary(recipe)
-    # final_recipe = final_recipes(recipe_dict, scores, model)
+    # final_recipe = final_recipes(recipe_dicts, scores, model)
     # image_path = image_generator(recipe)
 
     recipe = recipe_generator(st.session_state['scored_ingredients'])
     recipe_dicts = convert_to_dictionary(recipe)
-    final_recipe = final_recipes(recipe_dicts, scores, model)
+    final_recipe = regen_function(recipe_dicts, scores, model)
     image_path = image_generator(recipe)
 
     st.write(st.session_state['scored_ingredients'])

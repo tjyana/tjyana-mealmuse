@@ -307,6 +307,54 @@ def imagegen(title):
 
 
 
+'''-----------------------------------------------------------------------------------------------------------'''
+# check if score passes, regen if not
+def regen_function(recipes, scores, model):  ###<=== Function for evaluatimg if the score passes the threshold and regenerating if it doesn't
+    """
+    This evaluates whether the score of a recipe passes or fails the threshold.
+    If the recipe doesn't meet the threshold after 3 attempts, the last generated recipe is added.
+    """
+    final_recipes = {"Title": [], "Ingredients": [], "Instructions": []}
+    threshold = 0.4
+
+    for title, ingredients, instructions in zip(recipes["Title"], recipes["Ingredients"], recipes["Instructions"]):
+        if scores[i] >= threshold:
+            final_recipes["Title"].append(title)
+            final_recipes["Ingredients"].append(ingredients)
+            final_recipes["Instructions"].append(instructions)
+        else:
+            n = 0
+            tmp_recipe = {
+                "Title":recipes["Title"][i],
+                "Ingredients":recipes["Ingredients"][i],
+                "Instructions":recipes["Instructions"][i]
+                         }
+            last_recipe = {
+                "Title":recipes["Title"][i],
+                "Ingredients":recipes["Ingredients"][i],
+                "Instructions":recipes["Instructions"][i]
+                         }
+            while n < 3:
+                new_recipe = gptrecipe(tmp_recipe["Ingredients"][0])
+                new_score = model.predict_proba(new_recipe["Instructions"][0]) ###<=== insert the actual scoring model function here
+                if new_score >= threshold:
+                    final_recipes["Title"].append(new_recipe["Title"])
+                    final_recipes["Ingredients"].append(new_recipe["Ingredients"])
+                    final_recipes["Instructions"].append(new_recipe["Instructions"])
+                    break  # Exit loop if the new recipe passes the threshold
+                else:
+                    last_recipe = new_recipe  # Update tmp_recipe with the new recipe if the threshold isn't met
+                    n += 1
+            else: # Add the last generated recipe if the loop completes without finding a passing recipe
+                final_recipes["Title"].append(last_recipe["Title"])
+                final_recipes["Ingredients"].append(last_recipe["Ingredients"])
+                final_recipes["Instructions"].append(last_recipe["Instructions"])
+                break  # Exit the outer loop to prevent an unending loop
+
+    return final_recipes
+
+
+
 #Guide...
 
 # ingredients_combinations = combinations_of_two(input("Enter the list of ingredients separated by commas: "))
