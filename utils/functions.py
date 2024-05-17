@@ -41,31 +41,7 @@ def count_verified_pairings(combination, verified_pairings):
     return count
 
 
-# Function to find the top 3 largest acceptable groups of ingredients
-# Input: user input (string) ingredients
-# Output: 3 ingredients combinations (list) candidates
-# def find_top_3_groups(ingredients, verified_pairings):
 
-#     ingredients = [ingredient.strip() for ingredient in ingredients.split(',')]
-#     n = len(ingredients)
-#     valid_combinations = []  # Store all combinations that meet the criteria
-
-#     # Generate and check all combinations for meeting the required pairings
-#     for size in range(n, 1, -1):  # We start from n and go down since we're interested in larger groups first
-#         for combination in itertools.combinations(ingredients, size):
-#             required_pairings = size * (size - 1) / 2 * 0.8
-#             verified_count = count_verified_pairings(combination, verified_pairings)
-#             if verified_count >= required_pairings:
-#                 valid_combinations.append(combination)  # Add valid combination to the list
-
-#     # Sort the valid combinations by their size (number of ingredients) in descending order
-#     valid_combinations.sort(key=lambda x: len(x), reverse=True)
-#     print('====================')
-#     print(valid_combinations)
-#     # print(verified_pairings)
-#     print('====================')
-#     # Return the top 3 largest groups, but there might be fewer than 3
-#     return valid_combinations[:3]
 
 """End of new compatibility function"""
 
@@ -183,18 +159,7 @@ def prompt_muse(ingredients):
 
 '''-----------------------------------------------------------------------------------------------------------'''
 
-# def get_recipe_info(recipe):
-#     content = recipe["choices"][0]["message"]["content"]
-#     title_match = re.search(r"Title:(.*?)\n\nIngredients:", content, re.DOTALL)
-#     title = title_match.group(1) if title_match else None
 
-#     ingredients_match = re.search(r"Ingredients:(.+?)\n\nInstructions:", content, re.DOTALL)
-#     ingredients = ingredients_match.group(1).strip() if ingredients_match else None
-
-#     instructions_match = re.search(r"Instructions:(.+)", content, re.DOTALL)
-#     instructions = instructions_match.group(1).strip() if instructions_match else None
-
-#     return title, ingredients, instructions
 
 
 def gptrecipe(max_values):
@@ -245,64 +210,13 @@ def gptrecipe(max_values):
 
 
 '''-----------------------------------------------------------------------------------------------------------'''
-# def final_recipes(recipes, scores, model):  ###<=== Function for evaluatimg if the score passes the threshold and regenerating if it doesn't
-#     """
-#     This evaluates whether the score of a recipe passes or fails the threshold.
-#     If the recipe doesn't meet the threshold after 3 attempts, the last generated recipe is added.
-#     """
-#     final_recipes = {"Title": [], "Ingredients": [], "Instructions": []}
-#     threshold = 0.4
 
-#     for i in range(len(recipes["Title"])):
-#         if scores[i] >= threshold:
-#             final_recipes["Title"].append(recipes["Title"][i])
-#             final_recipes["Ingredients"].append(recipes["Ingredients"][i])
-#             final_recipes["Instructions"].append(recipes["Instructions"][i])
-#         else:
-#             n = 0
-#             tmp_recipe = {
-#                 "Title":recipes["Title"][i],
-#                 "Ingredients":recipes["Ingredients"][i],
-#                 "Instructions":recipes["Instructions"][i]
-#                          }
-#             last_recipe = {
-#                 "Title":recipes["Title"][i],
-#                 "Ingredients":recipes["Ingredients"][i],
-#                 "Instructions":recipes["Instructions"][i]
-#                          }
-#             while n < 3:
-#                 new_recipe = gptrecipe(tmp_recipe["Ingredients"][0])
-#                 new_score = model.predict_proba(new_recipe["Instructions"][0]) ###<=== insert the actual scoring model function here
-#                 if new_score >= threshold:
-#                     final_recipes["Title"].append(new_recipe["Title"])
-#                     final_recipes["Ingredients"].append(new_recipe["Ingredients"])
-#                     final_recipes["Instructions"].append(new_recipe["Instructions"])
-#                     break  # Exit loop if the new recipe passes the threshold
-#                 else:
-#                     last_recipe = new_recipe  # Update tmp_recipe with the new recipe if the threshold isn't met
-#                     n += 1
-#             else: # Add the last generated recipe if the loop completes without finding a passing recipe
-#                 final_recipes["Title"].append(last_recipe["Title"])
-#                 final_recipes["Ingredients"].append(last_recipe["Ingredients"])
-#                 final_recipes["Instructions"].append(last_recipe["Instructions"])
-#                 break  # Exit the outer loop to prevent an unending loop
-
-#     return final_recipes
 
 
 '''-----------------------------------------------------------------------------------------------------------'''
-#image generation function
 
-def imagegen(title):
-    response = openai.Image.create(
-        model="dall-e-3",
-        prompt=f"{title}",
-        size="1024x1024",
-        quality="standard",
-        n=1,
 
-    )
-    return response
+
 
 
 
@@ -399,53 +313,6 @@ def get_dataframe(file):
 
     return df
 '''-----------------------------------------------------------------------------------------------------------'''
-# def final_recipes(recipes, scores):  ###<=== Function for evaluating if the score passes the threshold and regenerating if it doesn't
-#     """
-#     This evaluates whether the score of a recipe passes or fails the threshold.
-#     If the recipe doesn't meet the threshold after 3 attempts, the last generated recipe is added.
-#     INPUT: Output of the recipe generator function
-#     NOTE FOR FRONT-END: it's important to make sure that the outputs of the new recipe generator are the same as the
-#                         old version for this function to still work.
-#                         optimized_gptrecipe() and scoring_model() must be replaced with the actual functions
-#     """
-#     final_recipes = {"Title": [], "Ingredients": [], "Instructions": []}
-#     threshold = 2
-
-#     for i in range(len(recipes["Title"])):
-#         if scores[i] >= threshold:
-#             final_recipes["Title"].append(recipes["Title"][i])
-#             final_recipes["Ingredients"].append(recipes["Ingredients"][i])
-#             final_recipes["Instructions"].append(recipes["Instructions"][i])
-#         else:
-#             n = 0
-#             tmp_recipe = {
-#                 "Title":recipes["Title"][i],
-#                 "Ingredients":recipes["Ingredients"][i],
-#                 "Instructions":recipes["Instructions"][i]
-#                          }
-#             last_recipe = {
-#                 "Title":recipes["Title"][i],
-#                 "Ingredients":recipes["Ingredients"][i],
-#                 "Instructions":recipes["Instructions"][i]
-#                          }
-#             while n < 3:
-#                 new_recipe = optimized_gptrecipe(tmp_recipe["Ingredients"][0]) ###<=== insert actual recipe generator
-#                 new_score = scoring_model(new_recipe["Instructions"][0]) ###<=== insert the actual scoring model function here
-#                 if new_score >= threshold:
-#                     final_recipes["Title"].append(new_recipe["Title"])
-#                     final_recipes["Ingredients"].append(new_recipe["Ingredients"])
-#                     final_recipes["Instructions"].append(new_recipe["Instructions"])
-#                     break  # Exit loop if the new recipe passes the threshold
-#                 else:
-#                     last_recipe = new_recipe  # Update tmp_recipe with the new recipe if the threshold isn't met
-#                     n += 1
-#             else: # Add the last generated recipe if the loop completes without finding a passing recipe
-#                 final_recipes["Title"].append(last_recipe["Title"])
-#                 final_recipes["Ingredients"].append(last_recipe["Ingredients"])
-#                 final_recipes["Instructions"].append(last_recipe["Instructions"])
-#                 break  # Exit the outer loop to prevent an unending loop
-
-#     return final_recipes
 
 
 '''-----------------------------------------------------------------------------------------------------------'''
@@ -504,113 +371,6 @@ def muse_comb(data_query_df): ###If this takes too long, consider taking the nes
 
 
 
-# def recipe_generator(lists):
-#     api_key = "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"
-#     client = Groq(
-#     api_key=api_key
-#     )
-#     recipe_list = []
-#     for i in range(len(lists)):
-#         chat_completion = client.chat.completions.create(
-#             messages=[
-#                 {
-#                     "role": "user",
-#                     "content": f"Suggest one recipe with {lists[i]} only. The final format of the output should contain Title, Ingredients and Directions only",
-#                 }
-#             ],
-#             model="llama3-8b-8192",
-#         )
-
-#         recipe = chat_completion.choices[0].message.content
-
-#         parts = recipe.split("**")
-#         title = parts[1].strip()
-#         ingredients = parts[4].strip()
-#         directions = parts[6].strip()
-
-#         recipe_dict = {}
-#         recipe_dict['title'] = title
-#         recipe_dict['ingredients'] = ingredients
-#         recipe_dict['directions'] = directions
-
-#         recipe_list.append(recipe_dict)
-
-#     return recipe_list
-
-
-
-
-
-
-# def recipe_generator(ingredients):
-#     MODEL_NAME_OR_PATH = "flax-community/t5-recipe-generation"
-#     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME_OR_PATH, use_fast=True)
-#     model = FlaxAutoModelForSeq2SeqLM.from_pretrained(MODEL_NAME_OR_PATH)
-
-#     prefix = "items: "
-#     generation_kwargs = {
-#         "max_length": 512,
-#         "min_length": 64,
-#         "no_repeat_ngram_size": 3,
-#         "do_sample": True,
-#         "top_k": 60,
-#         "top_p": 0.95
-#     }
-#     special_tokens = tokenizer.all_special_tokens
-#     tokens_map = {
-#         "<sep>": "--",
-#         "<section>": "\n"
-#     }
-#     def skip_special_tokens(text, special_tokens):
-#         for token in special_tokens:
-#             text = text.replace(token, "")
-
-#         return text
-
-#     def target_postprocessing(texts, special_tokens):
-#         if not isinstance(texts, list):
-#             texts = [texts]
-
-#         new_texts = []
-#         for text in texts:
-#             text = skip_special_tokens(text, special_tokens)
-
-#             for k, v in tokens_map.items():
-#                 text = text.replace(k, v)
-
-#             new_texts.append(text)
-
-#         return new_texts
-
-#     def generation_function(texts):
-#         _inputs = texts if isinstance(texts, list) else [texts]
-#         inputs = [prefix + inp for inp in _inputs]
-#         inputs = tokenizer(
-#             inputs,
-#             max_length=256,
-#             padding="max_length",
-#             truncation=True,
-#             return_tensors="jax"
-#         )
-
-#         input_ids = inputs.input_ids
-#         attention_mask = inputs.attention_mask
-
-#         output_ids = model.generate(
-#             input_ids=input_ids,
-#             attention_mask=attention_mask,
-#             **generation_kwargs
-#         )
-#         generated = output_ids.sequences
-#         generated_recipe = target_postprocessing(
-#             tokenizer.batch_decode(generated, skip_special_tokens=False),
-#             special_tokens
-#         )
-#         return generated_recipe
-#     recipe = generation_function(ingredients)
-#     return recipe
-
-
 def convert_to_dictionary(recipes):
     recipe_dicts = []
     for recipe in recipes:
@@ -630,23 +390,6 @@ def convert_to_dictionary(recipes):
 
     return recipe_dicts
 
-
-# def image_generator(recipe):
-#     client = Client("https://playgroundai-playground-v2-5.hf.space/--replicas/o9oxl/")
-#     result = client.predict(
-#             recipe,
-#             " ",
-#             False,
-#             820,
-#             1024,
-#             1024,
-#             3,
-#             True,
-#             api_name="/run"
-#     )
-
-#     image_path = result[0][0]['image']
-#     return image_path
 
 
 

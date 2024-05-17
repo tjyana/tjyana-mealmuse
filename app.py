@@ -406,15 +406,26 @@ if st.session_state['page3']:
     </style>""", unsafe_allow_html=True)
 
 
+# # ORIGINAL CODE
+#     img_list = []
+#     for title in st.session_state['titles']:
+#         if title != None:
+#             img = image_generator(title)
+#             img_list.append(img)
+
+# testing
     img_list = []
     for title in st.session_state['titles']:
-        if title != None:
+        if title == None:
+            img = image_generator('chicken')
+            img_list.append(img)
+        else:
             img = image_generator(title)
             img_list.append(img)
 
     with st.container():
 
-        dishes = [f'Dish {n+1}' for n in range(len(st.session_state['ingredients']))]
+        dishes = [f'Dish {n+1}' for n in range(len(st.session_state['titles']))]
         for index, tab in enumerate(st.tabs(dishes)):
 
 
