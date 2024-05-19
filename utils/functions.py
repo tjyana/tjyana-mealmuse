@@ -478,7 +478,7 @@ def final_recipes(recipe_dict, scores, model):  ###<=== Function for evaluating 
                         optimized_gptrecipe() and scoring_model() must be replaced with the actual functions
     """
     final_recipes = {"Title": [], "Ingredients": [], "Directions": []}
-    threshold = 0.5
+    threshold = 0.3
 
     for i in range(len(recipe_dict)):
         if scores[i] >= threshold:
