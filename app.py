@@ -292,7 +292,7 @@ if st.session_state['page3']:
     ingredients = st.session_state['ingredients']
     # find_top_3_groups = combinations_of_two > data_query > muse_comb
 
-    # PSEUDO CODE
+    # Functions Mapping:
     # combinations_of_two(ingredients_input) > ingredients_combinations
     # data_query(df, ingredients_combinations) > df_comb
     # muse_comb(data_query, df) > ingredients_list
@@ -301,31 +301,10 @@ if st.session_state['page3']:
     df_comb = data_query(df, ingredients_combinations)
     ingredients_list = muse_comb(df_comb)
     st.session_state['scored_ingredients'] = ingredients_list
-
-
-    # verified_pairings = st.session_state['verified_pairings']
-    # candidates = find_top_3_groups(ingredients, verified_pairings)
-    # print(candidates)
-    # # re-assign ingredient pairings to new variable:
-    # st.session_state['scored_ingredients'] = candidates
-    # # candidates = 3 ingredient combinations and their scores
-
+    recipe = recipe_generator(st.session_state['scored_ingredients'])
 
     contents, titles, ingredients = [], [], []
     contents1, titles1, ingredients1, scores = [], [], [], []  ##<==== changed the variables a bit so the variables below will not be affected
-    # st.session_state['scored_ingredients'] = ingredient combinations and scores
-
-    # PSEUDO CODE
-    # recipe = recipe_generator(st.session_state['scored_ingredients']) > recipe (list)
-    # recipe_dicts = convert_to_dictionary(recipe)
-    # final_recipe = final_recipes(recipe_dict, scores, model)
-    # image_path = image_generator(recipe)
-
-    recipe = recipe_generator(st.session_state['scored_ingredients'])
-
-    # final_recipe = final_recipes(recipe, scores, model)
-    # image_path = image_generator(titles1)
-
 
     scores = []
     recipe_direction = []
@@ -351,7 +330,6 @@ if st.session_state['page3']:
 
 
     # re-assigning variables to fit page switch format
-    # not necessary but keeping for simplicity
     st.session_state['titles'] = titles
     st.session_state['ingredients'] = ingredients
     st.session_state['directions'] = contents
@@ -406,22 +384,14 @@ if st.session_state['page3']:
     </style>""", unsafe_allow_html=True)
 
 
-# # ORIGINAL CODE
-#     img_list = []
-#     for title in st.session_state['titles']:
-#         if title != None:
-#             img = image_generator(title)
-#             img_list.append(img)
-
-# testing
+# ORIGINAL CODE
     img_list = []
     for title in st.session_state['titles']:
-        if title == None:
-            img = image_generator('chicken')
-            img_list.append(img)
-        else:
+        if title != None:
             img = image_generator(title)
             img_list.append(img)
+
+
 
     with st.container():
 
