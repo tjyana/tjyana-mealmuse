@@ -282,9 +282,10 @@ if st.session_state['page3']:
 
 
     # set user input as ingredients
-    # bringing over from page 2s
-    # needs to be in st.session_state format
+    # bringing over from page 2 in st.session_state format
     ingredients = st.session_state['ingredients']
+
+
 
     # FUNCTIONS MAP:
     # combinations_of_two(ingredients_input) > ingredients_combinations

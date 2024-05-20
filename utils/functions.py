@@ -24,39 +24,11 @@ df = pd.read_parquet('data/Halved-DF.parquet.gzip')
 
 
 
-'''-----------------------------------------------------------------------------------------------------------'''
-
-def muse_comb(df):
-    '''
-     the function calculates the products and cube roots of 'Score' values in a DataFrame, then returns the top 3 'Combination'
-     values where the cube root is greater than 0
-    '''
-    product = []
-    for i in range(len(df)):
-        product.append(np.prod(df['Score'][i]))
-
-    df['Product'] = product
-    df['cbrt'] = np.cbrt(product)
-
-    max_values = df.loc[df[df['cbrt'] > 0]['cbrt'].nlargest(3).index, 'Combination']
-    return max_values
-
-'''-----------------------------------------------------------------------------------------------------------'''
-
-
-
-
-'''-----------------------------------------------------------------------------------------------------------'''
-
-
-
 
 
 ####################################
 # Christine's code
 ####################################
-
-
 
 def combinations_of_two(ingredients_input): ###dealt with the issue of missing space crash
 
@@ -175,25 +147,6 @@ def muse_comb(data_query_df): ###If this takes too long, consider taking the nes
 ####################################
 
 
-
-def convert_to_dictionary(recipes):
-    recipe_dicts = []
-    for recipe in recipes:
-        recipe_dict = {}
-        parts = recipe.split('\n')
-        for part in parts:
-            key, value = part.split(':', 1)
-            key = key.strip().lower()
-            value = value.strip()
-
-            if key in ['ingredients', 'directions']:
-                items = [f"{i+1}. {info.strip().capitalize()}" for i, info in enumerate(value.split("--"))]
-                recipe_dict[key] = "\n".join(items)
-            else:
-                recipe_dict[key] = value
-        recipe_dicts.append(recipe_dict)
-
-    return recipe_dicts
 
 
 
