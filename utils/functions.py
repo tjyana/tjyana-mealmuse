@@ -185,15 +185,6 @@ def data_query(ingredients_combinations): ##Added a penalty of -5 for pairings t
     df_comb = pd.DataFrame(data)
     return df_comb
 
-'''-----------------------------------------------------------------------------------------------------------'''
-def get_dataframe(file):
-    """reads the parquet.gzip file ["Halved-DF.parquet.gzip"]
-    NOTE FOR FRON-END: the output of this function is an input for data_query()
-    """
-    df = pd.read_parquet(file)
-
-    return df
-'''-----------------------------------------------------------------------------------------------------------'''
 
 
 '''-----------------------------------------------------------------------------------------------------------'''

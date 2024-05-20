@@ -11,9 +11,9 @@ import pickle
 
 # Set page session states
 if 'page1' not in st.session_state:
-    st.session_state['page1'] = True
+    st.session_state['page1'] = False
 if 'page2' not in st.session_state:
-    st.session_state['page2'] = False
+    st.session_state['page2'] = True
 if 'page3' not in st.session_state:
     st.session_state['page3'] = False
 
