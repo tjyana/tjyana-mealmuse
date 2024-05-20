@@ -288,9 +288,11 @@ if st.session_state['page3']:
     model = get_model()
 
     df = pd.read_parquet('data/Halved-DF.parquet.gzip')
+
+
     # set user input as ingredients
+    # needs to be in st.session_state format
     ingredients = st.session_state['ingredients']
-    # find_top_3_groups = combinations_of_two > data_query > muse_comb
 
     # Functions Mapping:
     # combinations_of_two(ingredients_input) > ingredients_combinations
@@ -328,14 +330,6 @@ if st.session_state['page3']:
     titles.append(final_recipe["Title"])
     ingredients.append(final_recipe["Ingredients"])
     contents.append(final_recipe["Directions"])
-
-
-    # re-assigning variables to fit page switch format
-    # st.session_state['titles'] = titles
-    # st.session_state['ingredients'] = ingredients
-    # st.session_state['directions'] = contents
-
-
 
 
 
