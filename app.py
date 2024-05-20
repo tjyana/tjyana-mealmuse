@@ -295,16 +295,16 @@ if st.session_state['page3']:
     ingredients_combinations = combinations_of_two(ingredients)
     df_comb = data_query(ingredients_combinations)
     ingredients_list = muse_comb(df_comb)
-    recipe = recipe_generator(ingredients_list)
+    recipe_list = recipe_generator(ingredients_list)
 
     # we need to figure out what recipe is returning
 
     contents, titles, ingredients = [], [], []
     contents1, titles1, ingredients1, scores = [], [], [], []  ##<==== changed the variables a bit so the variables below will not be affected
 
-    #
+    # get scores based on the recipe directions
     recipe_direction = []
-    for single_recipe in recipe:
+    for single_recipe in recipe_list:
         if 'directions' in single_recipe:
             recipe_direction.append(single_recipe['directions'])
         else:
@@ -314,12 +314,16 @@ if st.session_state['page3']:
     for direction in recipe_direction:
         scores.append(model.predict_proba([direction])[0][1])
 
-    titles1 = [n['title'] for n in recipe] # list of titles
-    ingredient1 = [n['ingredients'] for n in recipe] # list of ingredients
-    contents1 = [n['directions'] for n in recipe] # list of directions
 
+    # da fuck is this?? do we need??# da fuck is this?? do we need??
+    titles1 = [n['title'] for n in recipe_list] # list of titles
+    ingredient1 = [n['ingredients'] for n in recipe_list] # list of ingredients
+    contents1 = [n['directions'] for n in recipe_list] # list of directions
+
+    # da fuck is this?? do we need??
     recipe_dict = {'title': titles1, 'ingredients': ingredients1, 'directions': contents1}
-    final_recipe = final_recipes(recipe_dict, scores, model) ##<===added the regenerator and reassigned the titles, ingredients, and contents variables to reflect the final recipes
+
+    final_recipe = final_recipes(recipe_list, scores, model) ##<===added the regenerator and reassigned the titles, ingredients, and contents variables to reflect the final recipes
     titles.append(final_recipe["Title"])
     ingredients.append(final_recipe["Ingredients"])
     contents.append(final_recipe["Directions"])

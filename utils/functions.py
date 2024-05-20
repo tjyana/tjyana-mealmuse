@@ -93,7 +93,7 @@ def data_query(ingredients_combinations): ##Added a penalty of -5 for pairings t
     return df_comb
 
 
-
+# something is wrong with muse_comb
 '''-----------------------------------------------------------------------------------------------------------'''
 def muse_comb(df_comb): ###If this takes too long, consider taking the nested calculate_sum(array) outside of the function
     '''
@@ -205,7 +205,7 @@ def recipe_generator(ingredients_lists):
 
 '''--------------------------------------------------------------------------------------------------------------'''
 
-def final_recipes(recipe_dict, scores, model):  ###<=== Function for evaluating if the score passes the threshold and regenerating if it doesn't
+def final_recipes(recipe_list, scores, model):  ###<=== Function for evaluating if the score passes the threshold and regenerating if it doesn't
     """
     This evaluates whether the score of a recipe passes or fails the threshold.
     If the recipe doesn't meet the threshold after 3 attempts, the last generated recipe is added.
@@ -217,17 +217,17 @@ def final_recipes(recipe_dict, scores, model):  ###<=== Function for evaluating 
     final_recipes = {"Title": [], "Ingredients": [], "Directions": []}
     threshold = 0.3
 
-    for i in range(len(recipe_dict)):
+    for i in range(len(recipe_list)):
         if scores[i] >= threshold:
-            final_recipes["Title"].append(recipe_dict[i]['title'])
-            final_recipes["Ingredients"].append(recipe_dict[i]['ingredients'])
-            final_recipes["Directions"].append(recipe_dict[i]['directions'])
+            final_recipes["Title"].append(recipe_list[i]['title'])
+            final_recipes["Ingredients"].append(recipe_list[i]['ingredients'])
+            final_recipes["Directions"].append(recipe_list[i]['directions'])
         else:
             n = 0
             tmp_recipe = {
-                "Title":recipe_dict[i]['title'],
-                "Ingredients":recipe_dict[i]['ingredients'],
-                "Directions":recipe_dict[i]['directions']
+                "Title":recipe_list[i]['title'],
+                "Ingredients":recipe_list[i]['ingredients'],
+                "Directions":recipe_list[i]['directions']
                          }
             last_recipe = {"title":[],
                            "ingredients":[],
