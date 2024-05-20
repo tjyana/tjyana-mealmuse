@@ -303,6 +303,8 @@ if st.session_state['page3']:
     st.session_state['scored_ingredients'] = ingredients_list
     recipe = recipe_generator(st.session_state['scored_ingredients'])
 
+    # we need to figure out what recipe is returning
+
     contents, titles, ingredients = [], [], []
     contents1, titles1, ingredients1, scores = [], [], [], []  ##<==== changed the variables a bit so the variables below will not be affected
 
@@ -318,9 +320,9 @@ if st.session_state['page3']:
     for direction in recipe_direction:
         scores.append(model.predict_proba([direction])[0][1])
 
-    titles1 = [n['title'] for n in recipe]
-    ingredient1 = [n['ingredients'] for n in recipe]
-    contents1 = [n['directions'] for n in recipe]
+    titles1 = [n['title'] for n in recipe] # list of titles
+    ingredient1 = [n['ingredients'] for n in recipe] # list of ingredients
+    contents1 = [n['directions'] for n in recipe] # list of directions
 
     recipe_dict = {'title': titles1, 'ingredients': ingredients1, 'directions': contents1}
     final_recipe = final_recipes(recipe, scores, model) ##<===added the regenerator and reassigned the titles, ingredients, and contents variables to reflect the final recipes
@@ -330,12 +332,12 @@ if st.session_state['page3']:
 
 
     # re-assigning variables to fit page switch format
-    st.session_state['titles'] = titles
-    st.session_state['ingredients'] = ingredients
-    st.session_state['directions'] = contents
+    # st.session_state['titles'] = titles
+    # st.session_state['ingredients'] = ingredients
+    # st.session_state['directions'] = contents
 
-    # Model predicts probabilities:
-    st.session_state['scores'] = scores
+
+
 
 
     # Columns
@@ -384,37 +386,37 @@ if st.session_state['page3']:
     </style>""", unsafe_allow_html=True)
 
 
-# ORIGINAL CODE
-    img_list = []
-    for title in st.session_state['titles']:
-        if title != None:
-            img = image_generator(title)
-            img_list.append(img)
+# WE NEED THIS ##############################################
+    # img_list = []
+    # for title in st.session_state['titles']:
+    #     if title != None:
+    #         img = image_generator(title)
+    #         img_list.append(img)
 
 
 
     with st.container():
 
-        dishes = [f'Dish {n+1}' for n in range(len(st.session_state['titles']))]
+        dishes = [f'Dish {n+1}' for n in range(len(titles))]
         for index, tab in enumerate(st.tabs(dishes)):
 
 
             with tab:
-                st.subheader(st.session_state['titles'][index])
+                st.subheader(titles[index])
 
                 col1, col2, col3 = st.columns([1, 2, 1])
                 with col1:
                     st.subheader('Ingredients')
-                    if index < len(st.session_state['ingredients']):
-                        st.write(st.session_state['ingredients'][index])
+                    if index < len(ingredients):
+                        st.write(ingredients[index])
                 with col2:
                     st.subheader('Instructions')
-                    if index < len(st.session_state['directions']):
-                        st.write(st.session_state['directions'][index])
+                    if index < len(contents):
+                        st.write(contents[index])
                 with col3:
                     st.subheader('Image')
-                    if index < len(img_list):
-                        st.image(img_list[index], width=200)
+                    # if index < len(img_list):
+                    #     st.image(img_list[index], width=200)
 
 
     # tab styles
