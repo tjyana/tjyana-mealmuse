@@ -30,6 +30,8 @@ df = pd.read_parquet('data/Halved-DF.parquet.gzip')
 # Christine's code
 ####################################
 
+
+# needs refactoring?? returning more than just the combinations
 def combinations_of_two(ingredients_input): ###dealt with the issue of missing space crash
 
     '''
@@ -93,7 +95,7 @@ def data_query(ingredients_combinations): ##Added a penalty of -5 for pairings t
 
 
 '''-----------------------------------------------------------------------------------------------------------'''
-def muse_comb(data_query_df): ###If this takes too long, consider taking the nested calculate_sum(array) outside of the function
+def muse_comb(df_comb): ###If this takes too long, consider taking the nested calculate_sum(array) outside of the function
     '''
      the function calculates the sum of the "Score" values and returns the three combinations with the largest sums
      OUTPUT: [['yeast', 'butter', 'eggs', 'pepper', 'cabbage', 'pork', 'flour', 'sugar'],
@@ -122,10 +124,10 @@ def muse_comb(data_query_df): ###If this takes too long, consider taking the nes
 
         return ingredients_list
 
-    for i in range(len(data_query_df)):
-        data_query_df["Sum"] = data_query_df["Score"].apply(calculate_sum)
+    for i in range(len(df_comb)):
+        df_comb["Sum"] = df_comb["Score"].apply(calculate_sum)
 
-    max_values = data_query_df.nlargest(3, "Sum")
+    max_values = df_comb.nlargest(3, "Sum")
 
     max_values = max_values["Combination"].reset_index(drop=True)
 
@@ -136,46 +138,23 @@ def muse_comb(data_query_df): ###If this takes too long, consider taking the nes
 '''--------------------------------------------------------------------------------------------------------------'''
 
 
-
-
-
-
-
-
 ####################################
 # Anna's code
 ####################################
 
-
-
-
-
-
-def image_generator(recipe):
-    client = Client("ByteDance/SDXL-Lightning")
-    result = client.predict(
-            recipe, # str  in 'Enter your prompt (English)' Textbox component
-            "1-Step",   # Literal['1-Step', '2-Step', '4-Step', '8-Step']  in 'Select inference steps' Dropdown component
-            api_name="/generate_image_1"
-    )
-    file_path = result.split('gradio')[1]
-    url = 'https://bytedance-sdxl-lightning.hf.space/file=/tmp/gradio' + file_path
-    return url
-
-
-def recipe_generator(lists):
+def recipe_generator(ingredients_lists):
     api_key = "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"
     client = Groq(
     api_key=api_key
     )
     recipe_list = []
 
-    if len(lists) == 1:
+    if len(ingredients_lists) == 1:
         chat_completion = client.chat.completions.create(
             messages=[
                 {
                     "role": "user",
-                    "content": f"Suggest one recipe with {lists} only. The final format of the output should contain Title, Ingredients and Directions only",
+                    "content": f"Suggest one recipe with {ingredients_lists} only. The final format of the output should contain Title, Ingredients and Directions only",
                 }
             ],
             model="llama3-8b-8192",
@@ -196,12 +175,12 @@ def recipe_generator(lists):
         recipe_list.append(recipe_dict)
 
     else:
-      for i in range(len(lists)):
+      for i in range(len(ingredients_lists)):
         chat_completion = client.chat.completions.create(
             messages=[
                 {
                     "role": "user",
-                    "content": f"Suggest one recipe with {lists[i]} only. The final format of the output should contain Title, Ingredients and Directions only",
+                    "content": f"Suggest one recipe with {ingredients_lists[i]} only. The final format of the output should contain Title, Ingredients and Directions only",
                 }
             ],
             model="llama3-8b-8192",
@@ -224,7 +203,7 @@ def recipe_generator(lists):
     return recipe_list
 
 
-
+'''--------------------------------------------------------------------------------------------------------------'''
 
 def final_recipes(recipe_dict, scores, model):  ###<=== Function for evaluating if the score passes the threshold and regenerating if it doesn't
     """
@@ -272,3 +251,16 @@ def final_recipes(recipe_dict, scores, model):  ###<=== Function for evaluating 
                 break  # Exit the outer loop to prevent an unending loop
 
     return final_recipes
+
+'''--------------------------------------------------------------------------------------------------------------'''
+
+def image_generator(recipe):
+    client = Client("ByteDance/SDXL-Lightning")
+    result = client.predict(
+            recipe, # str  in 'Enter your prompt (English)' Textbox component
+            "1-Step",   # Literal['1-Step', '2-Step', '4-Step', '8-Step']  in 'Select inference steps' Dropdown component
+            api_name="/generate_image_1"
+    )
+    file_path = result.split('gradio')[1]
+    url = 'https://bytedance-sdxl-lightning.hf.space/file=/tmp/gradio' + file_path
+    return url

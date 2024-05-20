@@ -302,7 +302,7 @@ if st.session_state['page3']:
     contents, titles, ingredients = [], [], []
     contents1, titles1, ingredients1, scores = [], [], [], []  ##<==== changed the variables a bit so the variables below will not be affected
 
-
+    #
     recipe_direction = []
     for single_recipe in recipe:
         if 'directions' in single_recipe:
@@ -319,7 +319,7 @@ if st.session_state['page3']:
     contents1 = [n['directions'] for n in recipe] # list of directions
 
     recipe_dict = {'title': titles1, 'ingredients': ingredients1, 'directions': contents1}
-    final_recipe = final_recipes(recipe, scores, model) ##<===added the regenerator and reassigned the titles, ingredients, and contents variables to reflect the final recipes
+    final_recipe = final_recipes(recipe_dict, scores, model) ##<===added the regenerator and reassigned the titles, ingredients, and contents variables to reflect the final recipes
     titles.append(final_recipe["Title"])
     ingredients.append(final_recipe["Ingredients"])
     contents.append(final_recipe["Directions"])
@@ -373,11 +373,11 @@ if st.session_state['page3']:
 
 
 # WE NEED THIS ##############################################
-    # img_list = []
-    # for title in st.session_state['titles']:
-    #     if title != None:
-    #         img = image_generator(title)
-    #         img_list.append(img)
+    img_list = []
+    for title in titles:
+        if title != None:
+            img = image_generator(title)
+            img_list.append(img)
 
 
 
@@ -401,8 +401,8 @@ if st.session_state['page3']:
                         st.write(contents[index])
                 with col3:
                     st.subheader('Image')
-                    # if index < len(img_list):
-                    #     st.image(img_list[index], width=200)
+                    if index < len(img_list):
+                        st.image(img_list[index], width=200)
 
 
     # tab styles
