@@ -298,25 +298,24 @@ if st.session_state['page3']:
     # muse_comb(data_query, df) > ingredients_list
 
     ingredients_combinations = combinations_of_two(ingredients)
-    df_comb = data_query(df, ingredients_combinations)
+    df_comb = data_query(ingredients_combinations)
     ingredients_list = muse_comb(df_comb)
-    st.session_state['scored_ingredients'] = ingredients_list
-    recipe = recipe_generator(st.session_state['scored_ingredients'])
+    recipe = recipe_generator(ingredients_list)
 
     # we need to figure out what recipe is returning
 
     contents, titles, ingredients = [], [], []
     contents1, titles1, ingredients1, scores = [], [], [], []  ##<==== changed the variables a bit so the variables below will not be affected
 
-    scores = []
-    recipe_direction = []
 
-    for recip in recipe:
-        if 'directions' in recip:
-            recipe_direction.append(recip['directions'])
+    recipe_direction = []
+    for single_recipe in recipe:
+        if 'directions' in single_recipe:
+            recipe_direction.append(single_recipe['directions'])
         else:
             recipe_direction.append("")
 
+    scores = []
     for direction in recipe_direction:
         scores.append(model.predict_proba([direction])[0][1])
 

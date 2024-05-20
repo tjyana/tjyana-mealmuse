@@ -16,7 +16,7 @@ from gradio_client import Client
 from groq import Groq
 
 
-
+df = pd.read_parquet('data/Halved-DF.parquet.gzip')
 
 ###helll00000"""
 
@@ -274,7 +274,7 @@ def combinations_of_two(ingredients_input): ###dealt with the issue of missing s
 
 '''-----------------------------------------------------------------------------------------------------------'''
 
-def data_query(df, ingredients_combinations): ##Added a penalty of -5 for pairings that are not in the dataframe
+def data_query(ingredients_combinations): ##Added a penalty of -5 for pairings that are not in the dataframe
     """
     INPUT: get_dataframe(), combinations_of_two()
     NOTE FOR FRONT-END: The output of this function is the input for muse_comb()
