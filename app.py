@@ -18,15 +18,6 @@ if 'page3' not in st.session_state:
     st.session_state['page3'] = False
 
 
-
-if 'verified_pairings' not in st.session_state:
-    filtered_df = pd.read_parquet('data/Halved-DF.parquet.gzip')
-    ingredient1 = filtered_df['ingredient1'].str.strip("'")
-    ingredient2 = filtered_df['ingredient2'].str.strip("'")
-    verified_pairings = set(zip(ingredient1, ingredient2))
-    st.session_state['verified_pairings'] = verified_pairings
-
-
 # ##############################################################
 # 1 Title Page
 # ##############################################################
@@ -291,10 +282,11 @@ if st.session_state['page3']:
 
 
     # set user input as ingredients
+    # bringing over from page 2s
     # needs to be in st.session_state format
     ingredients = st.session_state['ingredients']
 
-    # Functions Mapping:
+    # FUNCTIONS MAP:
     # combinations_of_two(ingredients_input) > ingredients_combinations
     # data_query(df, ingredients_combinations) > df_comb
     # muse_comb(data_query, df) > ingredients_list
