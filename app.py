@@ -315,12 +315,12 @@ if st.session_state['page3']:
         scores.append(model.predict_proba([direction])[0][1])
 
 
-    # da fuck is this?? do we need??# da fuck is this?? do we need??
+    # tha fuck is this?? do we need??
     titles1 = [n['title'] for n in recipe_list] # list of titles
     ingredient1 = [n['ingredients'] for n in recipe_list] # list of ingredients
     contents1 = [n['directions'] for n in recipe_list] # list of directions
 
-    # da fuck is this?? do we need??
+    # tha fuck is this?? do we need??
     recipe_dict = {'title': titles1, 'ingredients': ingredients1, 'directions': contents1}
 
     final_recipe = final_recipes(recipe_list, scores, model) ##<===added the regenerator and reassigned the titles, ingredients, and contents variables to reflect the final recipes
