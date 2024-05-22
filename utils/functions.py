@@ -15,6 +15,8 @@ import matplotlib.image as mpimg
 from gradio_client import Client
 from groq import Groq
 
+import config
+
 
 df = pd.read_parquet('data/Halved-DF.parquet.gzip')
 
@@ -176,7 +178,7 @@ def recipe_generator(ingredients_lists):
 
     '''
 
-    api_key = "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"
+    api_key = config.api_key2
     client = Groq(
     api_key=api_key
     )
