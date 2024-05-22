@@ -24,49 +24,60 @@ df = pd.read_parquet('data/Halved-DF.parquet.gzip')
 
 
 
-
-
-####################################
-# Christine's code
-####################################
-
-
-# needs refactoring?? returning more than just the combinations
 def combinations_of_two(ingredients_input): ###dealt with the issue of missing space crash
 
     '''
     The function generates all unique pairs of ingredients that can be made from the input list of ingredients.
     NOTE FOR FRONT-END: The output of this function is the input for data_query()
+
+    UPDATES
+    5/22/2024 by TJ:
+    - Modified it quite a bit so output format is one list of tuples
+    - Removed the powerset stuff
+
+    Inputs (1):
+    ingredients_input (from user input) =  single string with ingredients separated by commas and a space
+
+    Outputs (1):
+    ingredients_combinations (to data_query) = a list of tuples, containing all possible combinations of 2 (so if it's 4 ingredients, a list of 6 tuples and nothing more)
+
     '''
 
+    # split into list of individual ingredients
+    ingredients_list = []
+    ingredients = re.split('\s|,', ingredients_input)
+    [ingredients_list.append(ingredient) for ingredient in ingredients if ingredient != '']
+
+    # create list of all ingredient combinations
     ingredients_combinations = []
-    powerpowerset = []
-    ingredients = re.split(r',', ingredients_input.strip())
-    ingredients_list = list(set(ingredient.strip() for ingredient in ingredients))
-    for r in range(len(ingredients_list)+1):
-        combinations = itertools.combinations(ingredients_list, r)
-        #powerset.extend(subset for subset in combinations if len(subset) > 1)
-        for comb in combinations:
-            if len(comb) > 1:
-                if len(comb) < 3:
-                    ingredients_combinations.append(comb)
-                else:
-                    powerpowerset.append(comb)
-                    for power in powerpowerset:
-                        lowerset = []
-                        combins = itertools.combinations(power, 2)
-                        for arrange in combins:
-                            lowerset.append(arrange)
-                    ingredients_combinations.append(lowerset)
+    combinations = itertools.combinations(ingredients_list, 2)
+    ingredients_combinations = list(combinations)
+
     return ingredients_combinations
 
 '''-----------------------------------------------------------------------------------------------------------'''
 
-def data_query(ingredients_combinations): ##Added a penalty of -5 for pairings that are not in the dataframe
-    """
-    INPUT: get_dataframe(), combinations_of_two()
-    NOTE FOR FRONT-END: The output of this function is the input for muse_comb()
-    """
+def data_query(ingredients_combinations):
+    '''
+    Scores all combinations of two ingredients.
+
+    Updates:
+
+    Previous update:
+    ##Added a penalty of -5 for pairings that are not in the dataframe
+
+    5/22/2024 by TJ:
+    - Removed 'df' from params, defined it outside globally
+    - Added descriptions for input and output
+
+    Inputs (1):
+    ingredients_combinations (from combinations_of_two) = a list of tuples, containing all possible combinations of 2 as
+
+    Outputs (1):
+    df_comb (to muse_comb) = a datafrome with columns 'Combination' and 'Score', containing ingredient combinations and their scores as a dataframe  (for 4 ingredients: all 6 combinations and their respective scores)
+
+    '''
+
     data = []
     for combination in ingredients_combinations:
         if len(combination) < 3:
@@ -88,7 +99,6 @@ def data_query(ingredients_combinations): ##Added a penalty of -5 for pairings t
                 else:
                     scores.append(-5)
             data.append({'Combination': combination, 'Score': scores})
-
     df_comb = pd.DataFrame(data)
     return df_comb
 
@@ -108,6 +118,17 @@ def muse_comb(df_comb): ###If this takes too long, consider taking the nested ca
 
                          We might need a function to convert each lists into strings if
                          the recipe generator doesn't do this automatically.
+
+    Updates:
+    5/22/2024 by TJ:
+    - Added descriptions for input and output
+
+    Inputs (1):
+    df_comb (from data_query) = a datafrome with columns 'Combination' and 'Score', containing ingredient combinations and their scores as a dataframe  (for 4 ingredients: all 6 combinations and their respective scores)
+
+    Outputs (1):
+    ingredients_list (to recipe_generator) = a list of 3 lists, containing the 3 ingredients combinations with highest scores
+
     '''
 
     def calculate_sum(array):
@@ -138,11 +159,23 @@ def muse_comb(df_comb): ###If this takes too long, consider taking the nested ca
 '''--------------------------------------------------------------------------------------------------------------'''
 
 
-####################################
-# Anna's code
-####################################
-
 def recipe_generator(ingredients_lists):
+
+    '''
+    Takes ingredients_list from muse_comb and returns the actual recipes with titles, ingredients, and directions.
+
+    Updates:
+    5/22/2024 by TJ:
+    - Changed accumulator (and output) variable name from recipe_list to recipe_dicts
+
+    Inputs (1):
+    ingredients_list (from muse_comb) = a list of 3 lists, containing the 3 ingredients combinations with highest score
+
+    Outputs (1):
+    recipe_list (to final_recipe) = a list of 3 dictionaries with 3 keys each: 'title', 'ingredients', 'directions', containing info for the 3 recipes
+
+    '''
+
     api_key = "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"
     client = Groq(
     api_key=api_key
@@ -205,15 +238,53 @@ def recipe_generator(ingredients_lists):
 
 '''--------------------------------------------------------------------------------------------------------------'''
 
+def get_scores(recipe_list):
+    '''
+    Generates the score of each recipe.
+
+    Inputs (1):
+    recipe_list (from: recipe_generator) = a list of 3 dictionaries with 3 keys each: 'title', 'ingredients', 'directions', containing info for the 3 recipes
+
+    Outputs (1):
+    scores (to: final_recipes) = a list of 3 integers, containing the scores for each recipe.
+    '''
+
+    scores = []
+    recipe_direction = []
+
+    for recipe in recipe_list:
+        if 'directions' in recipe:
+            recipe_direction.append(recipe['directions'])
+        else:
+            recipe_direction.append("")
+
+    for direction in recipe_direction:
+        scores.append(model.predict_proba([direction])[0][1])
+
+    return scores
+
+
+'''--------------------------------------------------------------------------------------------------------------'''
+
 def final_recipes(recipe_list, scores, model):  ###<=== Function for evaluating if the score passes the threshold and regenerating if it doesn't
+
     """
     This evaluates whether the score of a recipe passes or fails the threshold.
     If the recipe doesn't meet the threshold after 3 attempts, the last generated recipe is added.
-    INPUT: Output of the recipe generator function
     NOTE FOR FRONT-END: it's important to make sure that the outputs of the new recipe generator are the same as the
                         old version for this function to still work.
                         optimized_gptrecipe() and scoring_model() must be replaced with the actual functions
+
+    Inputs (3):
+    recipe_list (from recipe_generator) = a list of 3 dictionaries with 3 keys each: 'title', 'ingredients', 'directions', containing info for the 3 recipes
+    scores (from code in app.py) = list of 3 integers, containing scores for each recipe
+    model (from get_model in app.py) = object
+
+    Outputs (1):
+    final_recipes = a list of 3 dictionaries with 3 keys each: 'title', 'ingredients', 'directions', containing info for 3 final recipes
+
     """
+
     final_recipes = {"Title": [], "Ingredients": [], "Directions": []}
     threshold = 0.3
 
@@ -255,6 +326,10 @@ def final_recipes(recipe_list, scores, model):  ###<=== Function for evaluating 
 '''--------------------------------------------------------------------------------------------------------------'''
 
 def image_generator(recipe):
+    '''
+
+
+    '''
     client = Client("ByteDance/SDXL-Lightning")
     result = client.predict(
             recipe, # str  in 'Enter your prompt (English)' Textbox component

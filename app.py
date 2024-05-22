@@ -1,5 +1,5 @@
 import streamlit as st
-from utils.functions import final_recipes, combinations_of_two, data_query, final_recipes, muse_comb, recipe_generator, image_generator
+from utils.functions import final_recipes, combinations_of_two, data_query, get_scores, final_recipes, muse_comb, recipe_generator, image_generator
 import pandas as pd
 import pickle
 
@@ -296,31 +296,19 @@ if st.session_state['page3']:
     df_comb = data_query(ingredients_combinations)
     ingredients_list = muse_comb(df_comb)
     recipe_list = recipe_generator(ingredients_list)
+    scores = get_scores(recipe_list)
 
-    # we need to figure out what recipe is returning
-
+    # wtf is this? i don't think we need this
     contents, titles, ingredients = [], [], []
     contents1, titles1, ingredients1, scores = [], [], [], []  ##<==== changed the variables a bit so the variables below will not be affected
 
-    # get scores based on the recipe directions
-    recipe_direction = []
-    for single_recipe in recipe_list:
-        if 'directions' in single_recipe:
-            recipe_direction.append(single_recipe['directions'])
-        else:
-            recipe_direction.append("")
 
-    scores = []
-    for direction in recipe_direction:
-        scores.append(model.predict_proba([direction])[0][1])
-
-
-    # tha fuck is this?? do we need??
+    # tha fuck is this??
     titles1 = [n['title'] for n in recipe_list] # list of titles
     ingredient1 = [n['ingredients'] for n in recipe_list] # list of ingredients
     contents1 = [n['directions'] for n in recipe_list] # list of directions
 
-    # tha fuck is this?? do we need??
+    # same thing - why is this here, who wrote this?
     recipe_dict = {'title': titles1, 'ingredients': ingredients1, 'directions': contents1}
 
     final_recipe = final_recipes(recipe_list, scores, model) ##<===added the regenerator and reassigned the titles, ingredients, and contents variables to reflect the final recipes
