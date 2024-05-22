@@ -165,3 +165,6 @@ secrets.toml
 
 # Ignore notebooks directory
 notebooks/
+
+# Ignore config.py
+config.py
