@@ -297,24 +297,13 @@ if st.session_state['page3']:
     ingredients_list = muse_comb(df_comb)
     recipe_list = recipe_generator(ingredients_list)
     scores = get_scores(recipe_list)
+    final_recipe = final_recipes(recipe_list, scores, model)
 
-    # wtf is this? i don't think we need this
-    contents, titles, ingredients = [], [], []
-    contents1, titles1, ingredients1, scores = [], [], [], []  ##<==== changed the variables a bit so the variables below will not be affected
-
-
-    # tha fuck is this??
-    titles1 = [n['title'] for n in recipe_list] # list of titles
-    ingredient1 = [n['ingredients'] for n in recipe_list] # list of ingredients
-    contents1 = [n['directions'] for n in recipe_list] # list of directions
-
-    # same thing - why is this here, who wrote this?
-    recipe_dict = {'title': titles1, 'ingredients': ingredients1, 'directions': contents1}
-
-    final_recipe = final_recipes(recipe_list, scores, model) ##<===added the regenerator and reassigned the titles, ingredients, and contents variables to reflect the final recipes
+    #
+    directions, titles, ingredients = [], [], []
     titles.append(final_recipe["Title"])
     ingredients.append(final_recipe["Ingredients"])
-    contents.append(final_recipe["Directions"])
+    directions.append(final_recipe["Directions"])
 
 
 
@@ -389,8 +378,8 @@ if st.session_state['page3']:
                         st.write(ingredients[index])
                 with col2:
                     st.subheader('Instructions')
-                    if index < len(contents):
-                        st.write(contents[index])
+                    if index < len(directions):
+                        st.write(directions[index])
                 with col3:
                     st.subheader('Image')
                     if index < len(img_list):

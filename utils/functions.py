@@ -168,21 +168,23 @@ def recipe_generator(ingredients_lists):
 
     Updates:
     5/22/2024 by TJ:
-    - Changed accumulator (and output) variable name from recipe_list to recipe_dicts
+    - Changed accumulator and output variable name from recipe_list to recipe_dicts
+    - Added config.py file to protect API Key.
 
     Inputs (1):
-    ingredients_list (from muse_comb) = a list of 3 lists, containing the 3 ingredients combinations with highest score
+    ingredients_list (from: muse_comb) = a list of 3 lists, containing the 3 ingredients combinations with highest score
 
     Outputs (1):
-    recipe_list (to final_recipe) = a list of 3 dictionaries with 3 keys each: 'title', 'ingredients', 'directions', containing info for the 3 recipes
+    recipe_list (to: get_scores, final_recipe) = a list of 3 dictionaries with 3 keys each: 'title', 'ingredients', 'directions', containing info for the 3 recipes
 
     '''
+
 
     api_key = config.api_key2
     client = Groq(
     api_key=api_key
     )
-    recipe_list = []
+    recipe_dicts = []
 
     if len(ingredients_lists) == 1:
         chat_completion = client.chat.completions.create(
@@ -207,7 +209,7 @@ def recipe_generator(ingredients_lists):
         recipe_dict['ingredients'] = ingredients
         recipe_dict['directions'] = directions
 
-        recipe_list.append(recipe_dict)
+        recipe_dicts.append(recipe_dict)
 
     else:
       for i in range(len(ingredients_lists)):
@@ -233,11 +235,9 @@ def recipe_generator(ingredients_lists):
         recipe_dict['ingredients'] = ingredients
         recipe_dict['directions'] = directions
 
-        recipe_list.append(recipe_dict)
+        recipe_dicts.append(recipe_dict)
 
-    return recipe_list
-
-
+    return recipe_dicts
 '''--------------------------------------------------------------------------------------------------------------'''
 
 def get_scores(recipe_list):
