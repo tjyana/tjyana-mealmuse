@@ -2,10 +2,9 @@ import itertools
 import re
 import numpy as np
 import pandas as pd
-import openai
-import pandas as pd
 import itertools
 import streamlit as st
+import pickle
 
 # Anna's imports
 from transformers import FlaxAutoModelForSeq2SeqLM
@@ -15,8 +14,16 @@ import matplotlib.image as mpimg
 from gradio_client import Client
 from groq import Groq
 
-import config
+import utils.config as config
 
+
+def get_model():
+    with open("utils/model.pickle", "rb") as f:
+        model = pickle.load(f)
+    return model
+
+# Initiate the model
+model = get_model()
 
 df = pd.read_parquet('data/Halved-DF.parquet.gzip')
 
@@ -168,7 +175,6 @@ def recipe_generator(ingredients_lists):
 
     Updates:
     5/22/2024 by TJ:
-    - Changed accumulator and output variable name from recipe_list to recipe_dicts
     - Added config.py file to protect API Key.
 
     Inputs (1):
@@ -184,7 +190,7 @@ def recipe_generator(ingredients_lists):
     client = Groq(
     api_key=api_key
     )
-    recipe_dicts = []
+    recipe_list = []
 
     if len(ingredients_lists) == 1:
         chat_completion = client.chat.completions.create(
@@ -209,7 +215,7 @@ def recipe_generator(ingredients_lists):
         recipe_dict['ingredients'] = ingredients
         recipe_dict['directions'] = directions
 
-        recipe_dicts.append(recipe_dict)
+        recipe_list.append(recipe_dict)
 
     else:
       for i in range(len(ingredients_lists)):
@@ -235,9 +241,9 @@ def recipe_generator(ingredients_lists):
         recipe_dict['ingredients'] = ingredients
         recipe_dict['directions'] = directions
 
-        recipe_dicts.append(recipe_dict)
+        recipe_list.append(recipe_dict)
 
-    return recipe_dicts
+    return recipe_list
 '''--------------------------------------------------------------------------------------------------------------'''
 
 def get_scores(recipe_list):

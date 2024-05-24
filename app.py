@@ -276,34 +276,43 @@ if st.session_state['page3']:
             model = pickle.load(f)
         return model
 
+    # Initiate the model
     model = get_model()
 
+    # Load the dataframe
     df = pd.read_parquet('data/Halved-DF.parquet.gzip')
 
 
-    # set user input as ingredients
-    # bringing over from page 2 in st.session_state format
-    ingredients = st.session_state['ingredients']
+
+    # Set user input as ingredients_input (bring from page 2 in st.session_state format)
+    ingredients_input = st.session_state['ingredients']
 
 
+    # Function calls
 
-    # FUNCTIONS MAP:
-    # combinations_of_two(ingredients_input) > ingredients_combinations
-    # data_query(df, ingredients_combinations) > df_comb
-    # muse_comb(data_query, df) > ingredients_list
+    ingredients_combinations = combinations_of_two(ingredients_input)
+    # ingredients_combinations = list containing tuples and lists
 
-    ingredients_combinations = combinations_of_two(ingredients)
     df_comb = data_query(ingredients_combinations)
+    # df_comb = datafrome with 2 columns: 'Combination' and 'Score'
+
     ingredients_list = muse_comb(df_comb)
+    # ingredients_list = list of 3 lists
+
     recipe_list = recipe_generator(ingredients_list)
+    # recipe_list = list of 3 dictionaries
+
     scores = get_scores(recipe_list)
-    final_recipe = final_recipes(recipe_list, scores, model)
+    # scores = list of 3 integers
+
+    final_recipes = final_recipes(recipe_list, scores, model)
+    # final_recipe = list of 3 dictionaries
 
     #
     directions, titles, ingredients = [], [], []
-    titles.append(final_recipe["Title"])
-    ingredients.append(final_recipe["Ingredients"])
-    directions.append(final_recipe["Directions"])
+    titles.append(final_recipes["Title"])
+    ingredients.append(final_recipes["Ingredients"])
+    directions.append(final_recipes["Directions"])
 
 
 
@@ -365,8 +374,8 @@ if st.session_state['page3']:
     with st.container():
 
         dishes = [f'Dish {n+1}' for n in range(len(titles))]
-        for index, tab in enumerate(st.tabs(dishes)):
 
+        for index, tab in enumerate(st.tabs(dishes)):
 
             with tab:
                 st.subheader(titles[index])
