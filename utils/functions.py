@@ -352,7 +352,7 @@ def image_generator(final_recipes):
 
     titles = final_recipes['title']
     print(titles)
-    images = []
+    image_urls = []
     for title in titles:
         result = client.predict(
                 title, # str  in 'Enter your prompt (English)' Textbox component
@@ -361,6 +361,5 @@ def image_generator(final_recipes):
         )
         file_path = result.split('gradio')[1]
         url = 'https://bytedance-sdxl-lightning.hf.space/file=/tmp/gradio' + file_path
-        print(url)
-    image_urls = images.append(url)
+        image_urls.append(url)
     return image_urls
