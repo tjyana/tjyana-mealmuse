@@ -1,5 +1,5 @@
 import streamlit as st
-from utils.functions import final_recipes, combinations_of_two, data_query, get_scores, final_recipes, muse_comb, recipe_generator, image_generator
+from utils.functions import final_recipes, combinations_of_two, data_query, get_scores, final_recipes, muse_comb, recipe_generator, image_generator, get_key_lists
 import pandas as pd
 import pickle
 
@@ -308,11 +308,8 @@ if st.session_state['page3']:
     final_recipes = final_recipes(recipe_list, scores, model)
     # final_recipe = list of 3 dictionaries
 
-    #
-    directions, titles, ingredients = [], [], []
-    titles.append(final_recipes["Title"])
-    ingredients.append(final_recipes["Ingredients"])
-    directions.append(final_recipes["Directions"])
+    key_lists = get_key_lists(final_recipes)
+
 
 
 

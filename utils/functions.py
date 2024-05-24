@@ -347,3 +347,12 @@ def image_generator(recipe):
     file_path = result.split('gradio')[1]
     url = 'https://bytedance-sdxl-lightning.hf.space/file=/tmp/gradio' + file_path
     return url
+
+
+def get_key_lists(final_recipes):
+    titles, ingredients, directions = [], [], []
+    for recipe in final_recipes:
+        titles.append(recipe["title"])
+        ingredients.append(recipe["ingredients"])
+        directions.append(recipe["directions"])
+    return titles, ingredients, directions
