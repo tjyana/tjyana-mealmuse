@@ -1,5 +1,5 @@
 import streamlit as st
-from utils.functions import final_recipes, combinations_of_two, data_query, get_scores, final_recipes, muse_comb, recipe_generator, image_generator, get_key_lists
+from utils.functions import combinations_of_two, data_query, get_scores, get_final_recipes, muse_comb, recipe_generator, image_generator
 import pandas as pd
 import pickle
 
@@ -305,11 +305,11 @@ if st.session_state['page3']:
     scores = get_scores(recipe_list)
     # scores = list of 3 integers
 
-    final_recipes = final_recipes(recipe_list, scores, model)
-    # final_recipe = list of 3 dictionaries
+    final_recipes = get_final_recipes(recipe_list, scores, model)
+    # final_recipes = list of 3 dictionaries
 
-    key_lists = get_key_lists(final_recipes)
-
+    image_urls = image_generator(final_recipes)
+    # image_urls = list of 3 strings
 
 
 
@@ -359,37 +359,32 @@ if st.session_state['page3']:
     </style>""", unsafe_allow_html=True)
 
 
-# WE NEED THIS ##############################################
-    img_list = []
-    for title in titles:
-        if title != None:
-            img = image_generator(title)
-            img_list.append(img)
+
 
 
 
     with st.container():
 
-        dishes = [f'Dish {n+1}' for n in range(len(titles))]
+        dishes = [f'Dish {n+1}' for n in range(len(final_recipes['title']))]
 
         for index, tab in enumerate(st.tabs(dishes)):
 
             with tab:
-                st.subheader(titles[index])
+                st.subheader(final_recipes['title'][index])
 
                 col1, col2, col3 = st.columns([1, 2, 1])
                 with col1:
                     st.subheader('Ingredients')
-                    if index < len(ingredients):
-                        st.write(ingredients[index])
+                    if index < len(final_recipes['ingredients']):
+                        st.write(final_recipes['ingredients'][index])
                 with col2:
-                    st.subheader('Instructions')
-                    if index < len(directions):
-                        st.write(directions[index])
+                    st.subheader('Directions')
+                    if index < len(final_recipes['directions']):
+                        st.write(final_recipes['directions'][index])
                 with col3:
                     st.subheader('Image')
-                    if index < len(img_list):
-                        st.image(img_list[index], width=200)
+                    if index < len(image_urls):
+                        st.image(image_urls[index], width=200)
 
 
     # tab styles

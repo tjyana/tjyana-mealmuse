@@ -274,7 +274,7 @@ def get_scores(recipe_list):
 
 '''--------------------------------------------------------------------------------------------------------------'''
 
-def final_recipes(recipe_list, scores, model):  ###<=== Function for evaluating if the score passes the threshold and regenerating if it doesn't
+def get_final_recipes(recipe_list, scores, model):  ###<=== Function for evaluating if the score passes the threshold and regenerating if it doesn't
 
     """
     This evaluates whether the score of a recipe passes or fails the threshold.
@@ -283,76 +283,84 @@ def final_recipes(recipe_list, scores, model):  ###<=== Function for evaluating 
                         old version for this function to still work.
                         optimized_gptrecipe() and scoring_model() must be replaced with the actual functions
 
+    UPDATES
+    5/13/2024 by everyone:
+    - Input format switched to recipe_list (previously: recipe_list was switched to lists of titles, ingredients, directions by code in app.py)
+
     Inputs (3):
-    recipe_list (from recipe_generator) = a list of 3 dictionaries with 3 keys each: 'title', 'ingredients', 'directions', containing info for the 3 recipes
-    scores (from code in app.py) = list of 3 integers, containing scores for each recipe
-    model (from get_model in app.py) = object
+    recipe_list (from: recipe_generator) = a list of 3 dictionaries with 3 keys each: 'title', 'ingredients', 'directions', containing info for the 3 recipes
+    scores (from: get_scores) = list of 3 integers, containing scores for each recipe
+    model (from: get_model in app.py) = object
 
     Outputs (1):
-    final_recipes = a list of 3 dictionaries with 3 keys each: 'title', 'ingredients', 'directions', containing info for 3 final recipes
+    final_recipes = 1 dictionary with 3 keys:
+        'title': list of 3 strings, each string containing recipe title
+        'ingredients': list of 3 strings, each string containing recipe ingredients
+        'directions': list of 3 strings, each string containing recipe directions
 
     """
 
-    final_recipes = {"Title": [], "Ingredients": [], "Directions": []}
+    final_recipes = {"title": [], "ingredients": [], "directions": []}
     threshold = 0.3
 
     for i in range(len(recipe_list)):
         if scores[i] >= threshold:
-            final_recipes["Title"].append(recipe_list[i]['title'])
-            final_recipes["Ingredients"].append(recipe_list[i]['ingredients'])
-            final_recipes["Directions"].append(recipe_list[i]['directions'])
+            final_recipes["title"].append(recipe_list[i]['title'])
+            final_recipes["ingredients"].append(recipe_list[i]['ingredients'])
+            final_recipes["directions"].append(recipe_list[i]['directions'])
         else:
             n = 0
             tmp_recipe = {
-                "Title":recipe_list[i]['title'],
-                "Ingredients":recipe_list[i]['ingredients'],
-                "Directions":recipe_list[i]['directions']
+                "title":recipe_list[i]['title'],
+                "ingredients":recipe_list[i]['ingredients'],
+                "directions":recipe_list[i]['directions']
                          }
             last_recipe = {"title":[],
                            "ingredients":[],
                            "directions":[]
                          }
             while n < 3:
-                new_recipe = recipe_generator([tmp_recipe["Ingredients"]]) ###<=== insert actual recipe generator
+                new_recipe = recipe_generator([tmp_recipe["ingredients"]]) ###<=== insert actual recipe generator
                 new_score = model.predict_proba([new_recipe[0]['directions']]) ###<=== insert the actual scoring model function here
                 if new_score[0][1] >= threshold:
-                    final_recipes["Title"].append(new_recipe[0]["title"])
-                    final_recipes["Ingredients"].append(new_recipe[0]["ingredients"])
-                    final_recipes["Directions"].append(new_recipe[0]["directions"])
+                    final_recipes["title"].append(new_recipe[0]["title"])
+                    final_recipes["ingredients"].append(new_recipe[0]["ingredients"])
+                    final_recipes["directions"].append(new_recipe[0]["directions"])
                     break  # Exit loop if the new recipe passes the threshold
                 else:
                     last_recipe = new_recipe  # Update tmp_recipe with the new recipe if the threshold isn't met
                     n += 1
             else: # Add the last generated recipe if the loop completes without finding a passing recipe
-                final_recipes["Title"].append(last_recipe[0]["title"][0][0])
-                final_recipes["Ingredients"].append(last_recipe[0]["ingredients"][0][0])
-                final_recipes["Directions"].append(last_recipe[0]["directions"][0][0])
+                final_recipes["title"].append(last_recipe[0]["title"][0][0])
+                final_recipes["ingredients"].append(last_recipe[0]["ingredients"][0][0])
+                final_recipes["directions"].append(last_recipe[0]["directions"][0][0])
                 break  # Exit the outer loop to prevent an unending loop
 
     return final_recipes
 
 '''--------------------------------------------------------------------------------------------------------------'''
 
-def image_generator(recipe):
+
+
+def image_generator(final_recipes):
     '''
+    key_lists = 3 lists
 
 
     '''
     client = Client("ByteDance/SDXL-Lightning")
-    result = client.predict(
-            recipe, # str  in 'Enter your prompt (English)' Textbox component
-            "1-Step",   # Literal['1-Step', '2-Step', '4-Step', '8-Step']  in 'Select inference steps' Dropdown component
-            api_name="/generate_image_1"
-    )
-    file_path = result.split('gradio')[1]
-    url = 'https://bytedance-sdxl-lightning.hf.space/file=/tmp/gradio' + file_path
-    return url
 
-
-def get_key_lists(final_recipes):
-    titles, ingredients, directions = [], [], []
-    for recipe in final_recipes:
-        titles.append(recipe["title"])
-        ingredients.append(recipe["ingredients"])
-        directions.append(recipe["directions"])
-    return titles, ingredients, directions
+    titles = final_recipes['title']
+    print(titles)
+    images = []
+    for title in titles:
+        result = client.predict(
+                title, # str  in 'Enter your prompt (English)' Textbox component
+                "1-Step",   # Literal['1-Step', '2-Step', '4-Step', '8-Step']  in 'Select inference steps' Dropdown component
+                api_name="/generate_image_1"
+        )
+        file_path = result.split('gradio')[1]
+        url = 'https://bytedance-sdxl-lightning.hf.space/file=/tmp/gradio' + file_path
+        print(url)
+    image_urls = images.append(url)
+    return image_urls
