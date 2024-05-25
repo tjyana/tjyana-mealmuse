@@ -306,10 +306,13 @@ if st.session_state['page3']:
     # scores = list of 3 integers
 
     final_recipes = get_final_recipes(recipe_list, scores, model)
-    # final_recipes = list of 3 dictionaries
+    # final_recipes = 1 dictionary with 3 keys:
+    #     'title': list of 3 strings, each string containing recipe title
+    #     'ingredients': list of 3 strings, each string containing recipe ingredients
+    #     'directions': list of 3 strings, each string containing recipe directions
 
     image_urls = image_generator(final_recipes)
-    # image_urls = list of 3 strings
+    # image_urls = list of 3 strings, each string containing image url
 
 
 

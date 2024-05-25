@@ -261,8 +261,10 @@ def get_scores(recipe_list):
 def get_final_recipes(recipe_list, scores, model):
 
     """
-    This evaluates whether the score of a recipe passes or fails the threshold.
-    If the recipe doesn't meet the threshold after 3 attempts, the last generated recipe is added.
+    1. Evaluates whether the score of a recipe passes or fails the threshold.
+    2. If a recipe fails, a new recipe is generated.
+    3. If the recipe doesn't meet the threshold after 3 attempts, the last generated recipe is added.
+    4. Separates the recipe output into titles, ingredients, directions (different output from recipe_generator).
 
     Inputs (3):
     recipe_list (from: recipe_generator) = 1 list of 3 dictionaries with 3 keys each: 'title', 'ingredients', 'directions', containing info for the 3 recipes
@@ -319,11 +321,20 @@ def get_final_recipes(recipe_list, scores, model):
 
 
 def image_generator(final_recipes):
-    '''
-    key_lists = 3 lists
-
 
     '''
+    Generates images for each recipe title.
+
+    Inputs (1):
+    final_recipes = 1 dictionary with 3 keys:
+        'title': list of 3 strings, each string containing recipe title
+        'ingredients': list of 3 strings, each string containing recipe ingredients
+        'directions': list of 3 strings, each string containing recipe directions
+
+    Outputs (1):
+    image_urls = 1 list with 3 strings, containing URLs for each generated image.
+    '''
+
     client = Client("ByteDance/SDXL-Lightning")
 
     titles = final_recipes['title']
