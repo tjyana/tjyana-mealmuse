@@ -43,7 +43,7 @@ def combinations_of_two(ingredients_input): ###dealt with the issue of missing s
     ingredients_input (from: user input in app) =  single string with ingredients separated by commas and a space
 
     Outputs (1):
-    ingredients_combinations (to: data_query) = a list of tuples, containing all possible combinations of 2 (so if it's 4 ingredients, a list of 6 tuples and nothing more)
+    ingredients_combinations (to: data_query) = 1 list with a mix of tuples and lists of tuples, containing various ingredient combinations
 
     '''
 
@@ -73,22 +73,14 @@ def combinations_of_two(ingredients_input): ###dealt with the issue of missing s
 
 def data_query(ingredients_combinations):
     '''
-    Scores all combinations of two ingredients.
-
-    Updates:
-
-    Previous update:
-    ##Added a penalty of -5 for pairings that are not in the dataframe
-
-    5/22/2024 by TJ:
-    - Removed 'df' from params, defined it outside globally
-    - Added descriptions for input and output
+    Scores combinations of ingredients.
+    Added a penalty of -5 for pairings that are not in the dataframe
 
     Inputs (1):
-    ingredients_combinations (from combinations_of_two) = a list of tuples, containing all possible combinations of 2 as
+    ingredients_combinations (from: combinations_of_two) = 1 list with a mix of tuples and lists of tuples, containing various ingredient combinations
 
     Outputs (1):
-    df_comb (to muse_comb) = a datafrome with columns 'Combination' and 'Score', containing ingredient combinations and their scores as a dataframe  (for 4 ingredients: all 6 combinations and their respective scores)
+    df_comb (to: muse_comb) = 1 datafrome with columns 'Combination' and 'Score', containing ingredient combinations and their scores as a dataframe  (for 4 ingredients: all 6 combinations and their respective scores)
 
     '''
 
@@ -114,35 +106,21 @@ def data_query(ingredients_combinations):
                     scores.append(-5)
             data.append({'Combination': combination, 'Score': scores})
     df_comb = pd.DataFrame(data)
-    print(df_comb)
     return df_comb
 
 
 # something is wrong with muse_comb
 '''-----------------------------------------------------------------------------------------------------------'''
-def muse_comb(df_comb): ###If this takes too long, consider taking the nested calculate_sum(array) outside of the function
+def muse_comb(df_comb):
     '''
-     the function calculates the sum of the "Score" values and returns the three combinations with the largest sums
-     OUTPUT: [['yeast', 'butter', 'eggs', 'pepper', 'cabbage', 'pork', 'flour', 'sugar'],
-                 ['butter', 'eggs', 'pepper', 'cabbage', 'pork', 'flour', 'sugar'],
-                 ['yeast', 'butter', 'eggs', 'pepper', 'cabbage', 'flour', 'sugar']]
-
-     NOTE FOR FRONT-END: The return is a list of lists so access the values by indexing e.g. output[0]
-
-                         The output of this function is the input for the recipe generator
-
-                         We might need a function to convert each lists into strings if
-                         the recipe generator doesn't do this automatically.
-
-    Updates:
-    5/22/2024 by TJ:
-    - Added descriptions for input and output
+    The function calculates the sum of the "Score" values and returns the three combinations with the largest sums
 
     Inputs (1):
-    df_comb (from data_query) = a datafrome with columns 'Combination' and 'Score', containing ingredient combinations and their scores as a dataframe  (for 4 ingredients: all 6 combinations and their respective scores)
+    df_comb (from: data_query) = a dataframe with columns 'Combination' and 'Score', containing ingredient combinations and their scores as a dataframe  (for 4 ingredients: all 6 combinations and their respective scores)
 
-    Outputs (1):
-    ingredients_list (to recipe_generator) = a list of 3 lists, containing the 3 ingredients combinations with highest scores
+    Output (1):
+    ingredients_list (to: recipe_generator) = 1 list of 3 lists, containing the 3 ingredients combinations with highest scores
+        ex.:[['yeast', 'butter', 'eggs', 'pepper', 'cabbage', 'pork', 'flour', 'sugar'], ['butter', 'eggs', 'pepper', 'cabbage', 'pork', 'flour', 'sugar'], ['yeast', 'butter', 'eggs', 'pepper', 'cabbage', 'flour', 'sugar']]
 
     '''
 
@@ -184,10 +162,10 @@ def recipe_generator(ingredients_lists):
     - Added config.py file to protect API Key.
 
     Inputs (1):
-    ingredients_list (from: muse_comb) = a list of 3 lists, containing the 3 ingredients combinations with highest score
+    ingredients_list (from: muse_comb) = 1 list of 3 lists, containing the 3 ingredients combinations with highest scores
 
     Outputs (1):
-    recipe_list (to: get_scores, final_recipe) = a list of 3 dictionaries with 3 keys each: 'title', 'ingredients', 'directions', containing info for the 3 recipes
+    recipe_list (to: get_scores, final_recipe) = 1 list of 3 dictionaries with 3 keys each: 'title', 'ingredients', 'directions', containing info for the 3 recipes
 
     '''
 
@@ -254,13 +232,13 @@ def recipe_generator(ingredients_lists):
 
 def get_scores(recipe_list):
     '''
-    Generates the score of each recipe.
+    Gets the score of each recipe.
 
     Inputs (1):
-    recipe_list (from: recipe_generator) = a list of 3 dictionaries with 3 keys each: 'title', 'ingredients', 'directions', containing info for the 3 recipes
+    recipe_list (from: recipe_generator) = 1 list of 3 dictionaries with 3 keys each: 'title', 'ingredients', 'directions', containing info for the 3 recipes
 
     Outputs (1):
-    scores (to: final_recipes) = a list of 3 integers, containing the scores for each recipe.
+    scores (to: final_recipes) = 1 list of 3 integers, containing the scores for each recipe.
     '''
 
     scores = []
@@ -280,22 +258,15 @@ def get_scores(recipe_list):
 
 '''--------------------------------------------------------------------------------------------------------------'''
 
-def get_final_recipes(recipe_list, scores, model):  ###<=== Function for evaluating if the score passes the threshold and regenerating if it doesn't
+def get_final_recipes(recipe_list, scores, model):
 
     """
     This evaluates whether the score of a recipe passes or fails the threshold.
     If the recipe doesn't meet the threshold after 3 attempts, the last generated recipe is added.
-    NOTE FOR FRONT-END: it's important to make sure that the outputs of the new recipe generator are the same as the
-                        old version for this function to still work.
-                        optimized_gptrecipe() and scoring_model() must be replaced with the actual functions
-
-    UPDATES
-    5/13/2024 by everyone:
-    - Input format switched to recipe_list (previously: recipe_list was switched to lists of titles, ingredients, directions by code in app.py)
 
     Inputs (3):
-    recipe_list (from: recipe_generator) = a list of 3 dictionaries with 3 keys each: 'title', 'ingredients', 'directions', containing info for the 3 recipes
-    scores (from: get_scores) = list of 3 integers, containing scores for each recipe
+    recipe_list (from: recipe_generator) = 1 list of 3 dictionaries with 3 keys each: 'title', 'ingredients', 'directions', containing info for the 3 recipes
+    scores (from: get_scores) = 1 list of 3 integers, containing scores for each recipe
     model (from: get_model in app.py) = object
 
     Outputs (1):
@@ -303,11 +274,10 @@ def get_final_recipes(recipe_list, scores, model):  ###<=== Function for evaluat
         'title': list of 3 strings, each string containing recipe title
         'ingredients': list of 3 strings, each string containing recipe ingredients
         'directions': list of 3 strings, each string containing recipe directions
-
     """
 
     final_recipes = {"title": [], "ingredients": [], "directions": []}
-    threshold = 0.3
+    threshold = 0.5
 
     for i in range(len(recipe_list)):
         if scores[i] >= threshold:
