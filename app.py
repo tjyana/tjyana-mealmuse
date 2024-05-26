@@ -38,9 +38,27 @@ if st.session_state['page1']:
     start_button = col2.button('START')
 
     # Images left, right and title background
-    col1.image('mealmuse_images/circleobjectleft.png')
-    col3.image('mealmuse_images/circleobjectright.png')
-    col2.image('mealmuse_images/centerobjects.png')
+    st.image('mealmuse_images/circleobjectleft.png')
+    st.image('mealmuse_images/circleobjectright.png')
+    st.image('mealmuse_images/centerobjects.png')
+
+
+
+
+# experimenting ##############################################################
+    # Left background image
+    col2.markdown(f'<div class="left-bg-image"><img src="mealmuse_images/circleobjectleft.png"></div>', unsafe_allow_html=True)
+
+    # Right background image
+    col2.markdown(f'<div class="right-bg-image"><img src="mealmuse_images/circleobjectright.png"></div>', unsafe_allow_html=True)
+
+    # Center background image
+    col2.markdown(f'<div class="center-bg-image"><img src="mealmuse_images/centerobjects.png"></div>', unsafe_allow_html=True)
+# experimenting ##############################################################
+
+
+
+
 
     # Start button styles
     st.markdown("""
@@ -83,42 +101,77 @@ if st.session_state['page1']:
             }
     </style>""", unsafe_allow_html=True)
 
+
+############################
+# experimenting ##############################################################
+
     # left background image styles
     st.markdown("""
     <style>
-        #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(2) > div > div{
+        /* Left background image styles */
+        .left-bg-image {
             position: fixed;
-            left: 0px;
-            bottom: 0px;
+            left: 0;
+            bottom: 0;
+        }
 
-    }
-    </style>""", unsafe_allow_html=True)
+        /* Right background image styles */
+        .right-bg-image {
+            position: fixed;
+            right: -65px;
+            bottom: 0;
+        }
 
-    # right background image styles
-    st.markdown("""
-    <style>
-        #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(3) > div > div{
-        position: fixed;
-        right: -65px;
-        bottom: 0px;
-    }
-    </style>""", unsafe_allow_html=True)
-
-    # center background image styles
-    st.markdown("""
-    <style>
-        #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(4) > div > div{
-        position: absolute;
-        left:0px;
-        top:-700px;
+        /* Center background image styles */
+        .center-bg-image {
+            position: absolute;
+            left: 0;
+            top: -700px;
         }
     </style>""", unsafe_allow_html=True)
+
+# experimenting ##############################################################
+
+
+# original ##############################################################
+
+    # # left background image styles
+    # st.markdown("""
+    # <style>
+    #     #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(2) > div > div{
+    #         position: fixed;
+    #         left: 0px;
+    #         bottom: 0px;
+    # }
+    # </style>""", unsafe_allow_html=True)
+
+    # # right background image styles
+    # st.markdown("""
+    # <style>
+    #     #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(3) > div > div{
+    #     position: fixed;
+    #     right: -65px;
+    #     bottom: 0px;
+    # }
+    # </style>""", unsafe_allow_html=True)
+
+    # # center background image styles
+    # st.markdown("""
+    # <style>
+    #     #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(4) > div > div{
+    #     position: absolute;
+    #     left:0px;
+    #     top:-700px;
+    #     }
+    # </style>""", unsafe_allow_html=True)
+
+    # original ##############################################################
 
     # Go to page 2
     if start_button:
         st.session_state['page2'] = True
         st.session_state['page1'] = False
-        st.rerun()
+        st.experimental_rerun()
 
 
 
@@ -255,7 +308,7 @@ if st.session_state['page2']:
     if evaluate_button:
         st.session_state['page3'] = True
         st.session_state['page2'] = False
-        st.rerun()
+        st.experimental_rerun()
 
 
 
@@ -269,6 +322,18 @@ if st.session_state['page2']:
 
 
 if st.session_state['page3']:
+
+    col1, col2, col3 = st.columns([1, 4, 1])
+    # Mealmuse header
+
+    col2.markdown("<h1 style='text-align: center; color: black; font-size:60px'>Mealmuse</h1>", unsafe_allow_html=True)
+    # Mealmuse subheader (Turn What..)
+    col2.markdown("<h2 style='text-align: center; color: grey; font-size:20px'>Turn What You Have to What You Crave &#128512; </h2>", unsafe_allow_html=True)
+    #col2.markdown("<h3 style='text-align: center; color: black; font-size:10px'>Enter Your Ingredients</h3>", unsafe_allow_html=True)
+
+    st.image('Streamlit/pages/mealmuse_images/circleobjectleft.png')
+    st.image('Streamlit/pages/mealmuse_images/circleobjectright.png')
+    st.image('Streamlit/pages/mealmuse_images/centerobjects.png')
 
     @st.cache_data
     def get_model():
@@ -316,19 +381,19 @@ if st.session_state['page3']:
 
 
 
-    # Columns
-    col1, col2, col3 = st.columns([1, 4, 1])
+    # # Columns
+    # col1, col2, col3 = st.columns([1, 4, 1])
 
-    # Mealmuse header
-    col2.markdown("<h1 style='text-align: center; color: black; font-size:60px'>Mealmuse</h1>", unsafe_allow_html=True)
-    # Mealmuse subheader (Turn What..)
-    col2.markdown("<h2 style='text-align: center; color: grey; font-size:20px'>Turn What You have to What You Crave &#128512; </h2>", unsafe_allow_html=True)
-    #col2.markdown("<h3 style='text-align: center; color: black; font-size:10px'>Enter Your Ingredients</h3>", unsafe_allow_html=True)
+    # # Mealmuse header
+    # col2.markdown("<h1 style='text-align: center; color: black; font-size:60px'>Mealmuse</h1>", unsafe_allow_html=True)
+    # # Mealmuse subheader (Turn What..)
+    # col2.markdown("<h2 style='text-align: center; color: grey; font-size:20px'>Turn What You have to What You Crave &#128512; </h2>", unsafe_allow_html=True)
+    # #col2.markdown("<h3 style='text-align: center; color: black; font-size:10px'>Enter Your Ingredients</h3>", unsafe_allow_html=True)
 
-    # Background images
-    st.image('mealmuse_images/circleobjectleft.png')
-    st.image('mealmuse_images/circleobjectright.png')
-    st.image('mealmuse_images/centerobjects.png')
+    # # Background images
+    # st.image('mealmuse_images/circleobjectleft.png')
+    # st.image('mealmuse_images/circleobjectright.png')
+    # st.image('mealmuse_images/centerobjects.png')
 
     # left background image styles
     st.markdown("""
