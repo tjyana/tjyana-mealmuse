@@ -11,9 +11,9 @@ import pickle
 
 # Set page session states
 if 'page1' not in st.session_state:
-    st.session_state['page1'] = False
+    st.session_state['page1'] = True
 if 'page2' not in st.session_state:
-    st.session_state['page2'] = True
+    st.session_state['page2'] = False
 if 'page3' not in st.session_state:
     st.session_state['page3'] = False
 
@@ -38,9 +38,9 @@ if st.session_state['page1']:
     start_button = col2.button('START')
 
     # Images left, right and title background
-    st.image('mealmuse_images/circleobjectleft.png')
-    st.image('mealmuse_images/circleobjectright.png')
-    st.image('mealmuse_images/centerobjects.png')
+    col1.image('mealmuse_images/circleobjectleft.png')
+    col3.image('mealmuse_images/circleobjectright.png')
+    col2.image('mealmuse_images/centerobjects.png')
 
     # Start button styles
     st.markdown("""
