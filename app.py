@@ -42,20 +42,26 @@ if st.session_state['page1']:
     st.image('mealmuse_images/circleobjectright.png')
     st.image('mealmuse_images/centerobjects.png')
 
+    ########## experimenting ################
 
 
+# Inject CSS for styling
 
-# experimenting ##############################################################
-    # Left background image
-    col2.markdown(f'<div class="left-bg-image"><img src="mealmuse_images/circleobjectleft.png"></div>', unsafe_allow_html=True)
+    st.markdown("""
+        <style>
+        .left-img {
+            position: fixed;
+            left: 0px;
+            bottom: 0px;
+        }
+        </style>
+    """, unsafe_allow_html=True)
 
-    # Right background image
-    col2.markdown(f'<div class="right-bg-image"><img src="mealmuse_images/circleobjectright.png"></div>', unsafe_allow_html=True)
+    # Verify HTML with CSS class
+    st.markdown('<img src="mealmuse_images/circleobjectleft.png" class="left-img">', unsafe_allow_html=True)
 
-    # Center background image
-    col2.markdown(f'<div class="center-bg-image"><img src="mealmuse_images/centerobjects.png"></div>', unsafe_allow_html=True)
-# experimenting ##############################################################
 
+######################################
 
 
 
@@ -102,68 +108,40 @@ if st.session_state['page1']:
     </style>""", unsafe_allow_html=True)
 
 
-############################
-# experimenting ##############################################################
 
-    # left background image styles
-    st.markdown("""
-    <style>
-        /* Left background image styles */
-        .left-bg-image {
-            position: fixed;
-            left: 0;
-            bottom: 0;
-        }
-
-        /* Right background image styles */
-        .right-bg-image {
-            position: fixed;
-            right: -65px;
-            bottom: 0;
-        }
-
-        /* Center background image styles */
-        .center-bg-image {
-            position: absolute;
-            left: 0;
-            top: -700px;
-        }
-    </style>""", unsafe_allow_html=True)
-
-# experimenting ##############################################################
 
 
 # original ##############################################################
 
-    # # left background image styles
-    # st.markdown("""
-    # <style>
-    #     #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(2) > div > div{
-    #         position: fixed;
-    #         left: 0px;
-    #         bottom: 0px;
-    # }
-    # </style>""", unsafe_allow_html=True)
+    # left background image styles
+    st.markdown("""
+    <style>
+        #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(2) > div > div{
+            position: fixed;
+            left: 0px;
+            bottom: 0px;
+    }
+    </style>""", unsafe_allow_html=True)
 
-    # # right background image styles
-    # st.markdown("""
-    # <style>
-    #     #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(3) > div > div{
-    #     position: fixed;
-    #     right: -65px;
-    #     bottom: 0px;
-    # }
-    # </style>""", unsafe_allow_html=True)
+    # right background image styles
+    st.markdown("""
+    <style>
+        #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(3) > div > div{
+        position: fixed;
+        right: -65px;
+        bottom: 0px;
+    }
+    </style>""", unsafe_allow_html=True)
 
-    # # center background image styles
-    # st.markdown("""
-    # <style>
-    #     #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(4) > div > div{
-    #     position: absolute;
-    #     left:0px;
-    #     top:-700px;
-    #     }
-    # </style>""", unsafe_allow_html=True)
+    # center background image styles
+    st.markdown("""
+    <style>
+        #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(4) > div > div{
+        position: absolute;
+        left:0px;
+        top:-700px;
+        }
+    </style>""", unsafe_allow_html=True)
 
     # original ##############################################################
 
