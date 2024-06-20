@@ -1,5 +1,7 @@
 Access the app here: https://tjyana-mealmuse.streamlit.app/
 
+NOTE: App may not be working due to issues with Groq.
+
 This app was created in tandem with 3 teammates from my cohort at Le Wagon.
 
 
