@@ -1,3 +1,8 @@
+Access the app here: https://tjyana-mealmuse.streamlit.app/
+
+This app was created in tandem with 3 teammates from my cohort at Le Wagon.
+
+
 MealMuse: From what you have to what you crave
 
 ・About MealMuse:
