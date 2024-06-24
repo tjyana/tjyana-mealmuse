@@ -1,9 +1,6 @@
 Access the app here: https://tjyana-mealmuse.streamlit.app/
 
-NOTE: App may not be working due to issues with Groq.
-
 This app was created in tandem with 3 teammates from my cohort at Le Wagon.
-
 
 MealMuse: From what you have to what you crave
 
@@ -18,3 +15,4 @@ MealMuse is an innovative AI-driven recipe generator designed to inspire your cu
 ・Dataset and Model Information
 Dataset: Over 170,000 ingredients, 180,000 recipes, and 1.1 million user ratings from food.com.
 Model Building: Feature selection, recipe rating encoding, and threshold fine-tuning. Evaluation with multiple scikit-learn models and enhancement through Google BERT tokenizers.
+

@@ -169,3 +169,6 @@ notebooks/
 
 # Ignore config.py
 config.py
+
+# to-do list
+todo.txt
