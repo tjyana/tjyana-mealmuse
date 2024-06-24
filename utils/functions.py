@@ -14,7 +14,7 @@ import matplotlib.image as mpimg
 from gradio_client import Client
 from groq import Groq
 
-import utils.config as config
+# import utils.config as config
 
 
 def get_model():
