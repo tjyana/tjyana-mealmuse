@@ -14,6 +14,7 @@ import matplotlib.image as mpimg
 from gradio_client import Client
 from groq import Groq
 
+# Uncomment below and edit apikey for testing locally:
 # import utils.config as config
 
 
