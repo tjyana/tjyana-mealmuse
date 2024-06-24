@@ -170,7 +170,7 @@ def recipe_generator(ingredients_lists):
     '''
 
 
-    api_key = config.api_key2
+    api_key = st.secrets['api_key2']
     client = Groq(
     api_key=api_key
     )
