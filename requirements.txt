@@ -13,3 +13,4 @@ transformers
 gradio-client
 flax
 streamlit
+groq
