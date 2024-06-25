@@ -37,10 +37,10 @@ if st.session_state['page1']:
     col2.image('mealmuse_images/people4.png')
     start_button = col2.button('START')
 
-    # Images left, right and title background
-    st.image('mealmuse_images/circleobjectleft.png')
-    st.image('mealmuse_images/circleobjectright.png')
-    st.image('mealmuse_images/centerobjects.png')
+    # # Images left, right and title background
+    # st.image('mealmuse_images/circleobjectleft.png')
+    # st.image('mealmuse_images/circleobjectright.png')
+    # st.image('mealmuse_images/centerobjects.png')
 
     ########## experimenting ################
 
@@ -57,8 +57,8 @@ if st.session_state['page1']:
         </style>
     """, unsafe_allow_html=True)
 
-    # Verify HTML with CSS class
-    st.markdown('<img src="mealmuse_images/circleobjectleft.png" class="left-img">', unsafe_allow_html=True)
+    # # Verify HTML with CSS class
+    # st.markdown('<img src="mealmuse_images/circleobjectleft.png" class="left-img">', unsafe_allow_html=True)
 
 
 ######################################
@@ -113,25 +113,25 @@ if st.session_state['page1']:
 
 # original ##############################################################
 
-    # left background image styles
-    st.markdown("""
-    <style>
-        #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(2) > div > div{
-            position: fixed;
-            left: 0px;
-            bottom: 0px;
-    }
-    </style>""", unsafe_allow_html=True)
+    # # left background image styles
+    # st.markdown("""
+    # <style>
+    #     #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(2) > div > div{
+    #         position: fixed;
+    #         left: 0px;
+    #         bottom: 0px;
+    # }
+    # </style>""", unsafe_allow_html=True)
 
-    # right background image styles
-    st.markdown("""
-    <style>
-        #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(3) > div > div{
-        position: fixed;
-        right: -65px;
-        bottom: 0px;
-    }
-    </style>""", unsafe_allow_html=True)
+    # # right background image styles
+    # st.markdown("""
+    # <style>
+    #     #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(3) > div > div{
+    #     position: fixed;
+    #     right: -65px;
+    #     bottom: 0px;
+    # }
+    # </style>""", unsafe_allow_html=True)
 
     # center background image styles
     st.markdown("""
@@ -175,10 +175,10 @@ if st.session_state['page2']:
 
     col2.markdown("<h3 style='text-align: center; color: grey; font-size:20px'>An AI-powered recipe generator that utilizes Machine Learning to offer customized cooking suggestions based on avalable ingredients</h3>", unsafe_allow_html=True)
 
-    # Images left, right and title background
-    st.image('mealmuse_images/circleobjectleft.png')
-    st.image('mealmuse_images/circleobjectright.png')
-    st.image('mealmuse_images/centerobjects.png')
+    # # Images left, right and title background
+    # st.image('mealmuse_images/circleobjectleft.png')
+    # st.image('mealmuse_images/circleobjectright.png')
+    # st.image('mealmuse_images/centerobjects.png')
 
     # evaluate button
     st.markdown("""
@@ -223,36 +223,36 @@ if st.session_state['page2']:
 
 
 
-     # left background image styles
-    st.markdown("""
-    <style>
-        #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(2) > div > div{
-            position: fixed;
-            left: 0px;
-            bottom: 0px;
+    #  # left background image styles
+    # st.markdown("""
+    # <style>
+    #     #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(2) > div > div{
+    #         position: fixed;
+    #         left: 0px;
+    #         bottom: 0px;
 
-    }
-    </style>""", unsafe_allow_html=True)
+    # }
+    # </style>""", unsafe_allow_html=True)
 
-     # right background image styles
-    st.markdown("""
-    <style>
-        #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(3) > div > div{
-        position: fixed;
-        right: -65px;
-        bottom: 0px;
-    }
-    </style>""", unsafe_allow_html=True)
+    #  # right background image styles
+    # st.markdown("""
+    # <style>
+    #     #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(3) > div > div{
+    #     position: fixed;
+    #     right: -65px;
+    #     bottom: 0px;
+    # }
+    # </style>""", unsafe_allow_html=True)
 
-     # center background image styles
-    st.markdown("""
-    <style>
-        #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(4) > div > div{
-        position: absolute;
-        left:0px;
-        top:-550px;
-        }
-    </style>""", unsafe_allow_html=True)
+    # #  center background image styles
+    # st.markdown("""
+    # <style>
+    #     #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(4) > div > div{
+    #     position: absolute;
+    #     left:0px;
+    #     top:-550px;
+    #     }
+    # </style>""", unsafe_allow_html=True)
 
 
 
@@ -373,36 +373,36 @@ if st.session_state['page3']:
     # st.image('mealmuse_images/circleobjectright.png')
     # st.image('mealmuse_images/centerobjects.png')
 
-    # left background image styles
-    st.markdown("""
-    <style>
-        #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(2) > div > div{
-            position: fixed;
-            left: 0px;
-            bottom: 0px;
+    # # left background image styles
+    # st.markdown("""
+    # <style>
+    #     #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(2) > div > div{
+    #         position: fixed;
+    #         left: 0px;
+    #         bottom: 0px;
 
-    }
-    </style>""", unsafe_allow_html=True)
+    # }
+    # </style>""", unsafe_allow_html=True)
 
-    # right background image styles
-    st.markdown("""
-    <style>
-        #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(3) > div > div{
-        position: fixed;
-        right: -65px;
-        bottom: 0px;
-    }
-    </style>""", unsafe_allow_html=True)
+    # # right background image styles
+    # st.markdown("""
+    # <style>
+    #     #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(3) > div > div{
+    #     position: fixed;
+    #     right: -65px;
+    #     bottom: 0px;
+    # }
+    # </style>""", unsafe_allow_html=True)
 
-    # center background image styles
-    st.markdown("""
-    <style>
-        #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(4) > div > div{
-        position: absolute;
-        left:0px;
-        top:-250px;
-        }
-    </style>""", unsafe_allow_html=True)
+    # # center background image styles
+    # st.markdown("""
+    # <style>
+    #     #root > div:nth-child(1) > div.withScreencast > div > div > div > section > div.block-container.st-emotion-cache-1y4p8pa.ea3mdgi5 > div > div > div > div:nth-child(4) > div > div{
+    #     position: absolute;
+    #     left:0px;
+    #     top:-250px;
+    #     }
+    # </style>""", unsafe_allow_html=True)
 
 
 
