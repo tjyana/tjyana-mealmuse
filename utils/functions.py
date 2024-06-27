@@ -351,3 +351,33 @@ def image_generator(final_recipes):
         url = 'https://bytedance-sdxl-lightning.hf.space/file=/tmp/gradio' + file_path
         image_urls.append(url)
     return image_urls
+
+
+
+# ##### new, to be implemented:
+# # ----------------------------
+# import json
+# import google.generativeai as genai
+# from dotenv import load_dotenv
+# import os
+
+# load_dotenv()
+# goog_api_key = os.getenv('GOOGLE_API_KEY') # create a variable in .env file 'GOOGLE_API_KEY' and add the api key there
+
+
+# def recipe_generator(lists):
+#     model = genai.GenerativeModel('gemini-1.5-flash')
+
+#     recipe_list = []
+
+#     if len(lists) == 1:
+#         response = model.generate_content(f"Suggest a recipe only with the ingredients of {lists[0]}. The final format is a json with keys of Title, Ingredients and Directions only, ```remove the backticks and json in the final output```")
+#         recipe = response.text
+#         recipe_list.append( json.loads(recipe))
+#     else:
+#       for i in range(len(lists)):
+#         response = model.generate_content(f"Suggest a recipe only with the ingredients of {lists[i]}. The final format is a json with keys of Title, Ingredients and Directions only, ```remove the backticks and json in the final output```")
+#         recipe = response.text
+#         recipe_list.append( json.loads(recipe))
+
+#     return recipe_list
