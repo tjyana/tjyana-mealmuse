@@ -158,6 +158,7 @@ import json
 import google.generativeai as genai
 from dotenv import load_dotenv
 import os
+from json.decoder import JSONDecodeError
 
 load_dotenv()
 goog_api_key = os.getenv('GOOGLE_API_KEY') # create a variable in .env file 'GOOGLE_API_KEY' and add the api key there
@@ -177,6 +178,15 @@ def recipe_generator(lists):
         response = model.generate_content(f"Suggest a recipe only with the ingredients of {lists[i]}. The final format is a json with keys of Title, Ingredients and Directions only, ```remove the backticks and json in the final output```")
         recipe = response.text
         recipe_list.append( json.loads(recipe))
+
+    attempt = 0
+    retry_limit = 1
+    while attempt < retry_limit:
+        try:
+            recipe_list = recipe_generator(lists)
+            break
+        except JSONDecodeError as e:
+            attempt += 1
 
     return recipe_list
 
