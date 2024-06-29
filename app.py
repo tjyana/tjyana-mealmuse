@@ -346,7 +346,7 @@ if st.session_state['page3']:
 # ---------------------------------------------------------
 # ---------------------------------------------------------
 # UNDER CONSTRUCTION
-
+    recipe_list = []
     # code snippet to handle recipe_generator with JSONDecodeError
     attempt = 0
     retry_limit = 1

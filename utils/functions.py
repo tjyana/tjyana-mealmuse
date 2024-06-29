@@ -170,23 +170,23 @@ def recipe_generator(lists):
     recipe_list = []
 
     if len(lists) == 1:
-        response = model.generate_content(f"Suggest a recipe only with the ingredients of {lists[0]}. The final format is a json with keys of Title, Ingredients and Directions only, ```remove the backticks and json in the final output```")
+        response = model.generate_content(f"Suggest a recipe only with the ingredients of {lists[0]}. The final format is a json with keys of title, ingredients and directions only, ```remove the backticks and json in the final output```")
         recipe = response.text
         recipe_list.append( json.loads(recipe))
     else:
       for i in range(len(lists)):
-        response = model.generate_content(f"Suggest a recipe only with the ingredients of {lists[i]}. The final format is a json with keys of Title, Ingredients and Directions only, ```remove the backticks and json in the final output```")
+        response = model.generate_content(f"Suggest a recipe only with the ingredients of {lists[i]}. The final format is a json with keys of title, ingredients and directions only, ```remove the backticks and json in the final output```")
         recipe = response.text
         recipe_list.append( json.loads(recipe))
 
-    attempt = 0
-    retry_limit = 1
-    while attempt < retry_limit:
-        try:
-            recipe_list = recipe_generator(lists)
-            break
-        except JSONDecodeError as e:
-            attempt += 1
+    # attempt = 0
+    # retry_limit = 1
+    # while attempt < retry_limit:
+    #     try:
+    #         recipe_list = recipe_generator(lists)
+    #         break
+    #     except JSONDecodeError as e:
+    #         attempt += 1
 
     return recipe_list
 
