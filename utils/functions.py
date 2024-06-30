@@ -147,7 +147,7 @@ def muse_comb(df_comb):
     max_values = max_values["Combination"].reset_index(drop=True)
 
     ingredients_lists = ingredients_to_lists(max_values)
-    print(ingredients_lists)
+    print(ingredients_lists) # debug code-------------------------------remove later
     return ingredients_lists
 
 '''--------------------------------------------------------------------------------------------------------------'''
@@ -161,7 +161,7 @@ import os
 from json.decoder import JSONDecodeError
 
 load_dotenv()
-goog_api_key = os.getenv('GOOGLE_API_KEY') # create a variable in .env file 'GOOGLE_API_KEY' and add the api key there
+goog_api_key = os.getenv('goog_api_key') # create a variable in .env file 'GOOGLE_API_KEY' and add the api key there
 
 
 def recipe_generator(lists):
@@ -178,15 +178,7 @@ def recipe_generator(lists):
         response = model.generate_content(f"Suggest a recipe only with the ingredients of {lists[i]}. The final format is a json with keys of title, ingredients and directions only, ```remove the backticks and json in the final output```")
         recipe = response.text
         recipe_list.append( json.loads(recipe))
-
-    # attempt = 0
-    # retry_limit = 1
-    # while attempt < retry_limit:
-    #     try:
-    #         recipe_list = recipe_generator(lists)
-    #         break
-    #     except JSONDecodeError as e:
-    #         attempt += 1
+        print(recipe_list) # debug code-------------------------------remove later
 
     return recipe_list
 
@@ -321,7 +313,7 @@ def get_final_recipes(recipe_list, scores, model):
     """
 
     final_recipes = {"title": [], "ingredients": [], "directions": []}
-    threshold = 0.5
+    threshold = 0.2
 
     for i in range(len(recipe_list)):
         if scores[i] >= threshold:

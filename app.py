@@ -313,6 +313,8 @@ if st.session_state['page3']:
     # st.image('Streamlit/pages/mealmuse_images/circleobjectright.png')
     # st.image('Streamlit/pages/mealmuse_images/centerobjects.png')
 
+
+    # Load model
     @st.cache_data
     def get_model():
         with open("utils/model.pickle", "rb") as f:
@@ -324,8 +326,6 @@ if st.session_state['page3']:
 
     # Load the dataframe
     df = pd.read_parquet('data/Halved-DF.parquet.gzip')
-
-
 
     # Set user input as ingredients_input (bring from page 2 in st.session_state format)
     ingredients_input = st.session_state['ingredients']
@@ -356,7 +356,7 @@ if st.session_state['page3']:
             break
         except JSONDecodeError as e:
             attempt += 1
-
+    print('recipe_list:', recipe_list)# debug code-------------------------------remove later
 
     # recipe_list = recipe_generator(ingredients_list)
     # recipe_list = list of 3 dictionaries
@@ -369,9 +369,12 @@ if st.session_state['page3']:
 
 
     scores = get_scores(recipe_list)
+    print(scores)
     # scores = list of 3 integers
 
     final_recipes = get_final_recipes(recipe_list, scores, model)
+    print('final_recipes:', final_recipes)# debug code-------------------------------remove later
+    print('final_recipes["title"]:', final_recipes['title'])# debug code-------------------------------remove later
     # final_recipes = 1 dictionary with 3 keys:
     #     'title': list of 3 strings, each string containing recipe title
     #     'ingredients': list of 3 strings, each string containing recipe ingredients
@@ -382,19 +385,9 @@ if st.session_state['page3']:
 
 
 
-    # # Columns
-    # col1, col2, col3 = st.columns([1, 4, 1])
 
-    # # Mealmuse header
-    # col2.markdown("<h1 style='text-align: center; color: black; font-size:60px'>Mealmuse</h1>", unsafe_allow_html=True)
-    # # Mealmuse subheader (Turn What..)
-    # col2.markdown("<h2 style='text-align: center; color: grey; font-size:20px'>Turn What You have to What You Crave &#128512; </h2>", unsafe_allow_html=True)
-    # #col2.markdown("<h3 style='text-align: center; color: black; font-size:10px'>Enter Your Ingredients</h3>", unsafe_allow_html=True)
 
-    # # Background images
-    # st.image('mealmuse_images/circleobjectleft.png')
-    # st.image('mealmuse_images/circleobjectright.png')
-    # st.image('mealmuse_images/centerobjects.png')
+
 
     # # left background image styles
     # st.markdown("""
