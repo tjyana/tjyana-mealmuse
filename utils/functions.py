@@ -147,122 +147,89 @@ def muse_comb(df_comb):
     max_values = max_values["Combination"].reset_index(drop=True)
 
     ingredients_lists = ingredients_to_lists(max_values)
-    print(ingredients_lists) # debug code-------------------------------remove later
+    print(ingredients_lists)
     return ingredients_lists
 
 '''--------------------------------------------------------------------------------------------------------------'''
 
-##### new, to be implemented:
-# ----------------------------
-import json
-import google.generativeai as genai
-from dotenv import load_dotenv
-import os
-from json.decoder import JSONDecodeError
 
-load_dotenv()
-goog_api_key = os.getenv('goog_api_key') # create a variable in .env file 'GOOGLE_API_KEY' and add the api key there
+def recipe_generator(ingredients_lists):
+
+    '''
+    Takes ingredients_list from muse_comb and returns the actual recipes with titles, ingredients, and directions.
+
+    Updates:
+    5/22/2024 by TJ:
+    - Added config.py file to protect API Key.
+
+    Inputs (1):
+    ingredients_list (from: muse_comb) = 1 list of 3 lists, containing the 3 ingredients combinations with highest scores
+
+    Outputs (1):
+    recipe_list (to: get_scores, final_recipe) = 1 list of 3 dictionaries with 3 keys each: 'title', 'ingredients', 'directions', containing info for the 3 recipes
+
+    '''
 
 
-def recipe_generator(lists):
-    model = genai.GenerativeModel('gemini-1.5-flash')
-
+    api_key = st.secrets['api_key2']
+    client = Groq(
+    api_key=api_key
+    )
     recipe_list = []
 
-    if len(lists) == 1:
-        response = model.generate_content(f"Suggest a recipe only with the ingredients of {lists[0]}. The final format is a json with keys of title, ingredients and directions only, ```remove the backticks and json in the final output```")
-        recipe = response.text
-        recipe_list.append( json.loads(recipe))
+    if len(ingredients_lists) == 1:
+        chat_completion = client.chat.completions.create(
+            messages=[
+                {
+                    "role": "user",
+                    "content": f"Suggest one recipe with {ingredients_lists} only. The final format of the output should contain Title, Ingredients and Directions only",
+                }
+            ],
+            model="llama3-8b-8192",
+        )
+
+        recipe = chat_completion.choices[0].message.content
+
+        parts = recipe.split("**")
+        title = parts[1].strip()
+        ingredients = parts[4].strip()
+        directions = parts[6].strip()
+
+        recipe_dict = {}
+        recipe_dict['title'] = title
+        recipe_dict['ingredients'] = ingredients
+        recipe_dict['directions'] = directions
+
+        recipe_list.append(recipe_dict)
+
     else:
-      for i in range(len(lists)):
-        response = model.generate_content(f"Suggest a recipe only with the ingredients of {lists[i]}. The final format is a json with keys of title, ingredients and directions only, ```remove the backticks and json in the final output```")
-        recipe = response.text
-        recipe_list.append( json.loads(recipe))
-        print(recipe_list) # debug code-------------------------------remove later
+      for i in range(len(ingredients_lists)):
+        chat_completion = client.chat.completions.create(
+            messages=[
+                {
+                    "role": "user",
+                    "content": f"Suggest one recipe with {ingredients_lists[i]} only. The final format of the output should contain Title, Ingredients and Directions only",
+                }
+            ],
+            model="llama3-8b-8192",
+        )
+
+        recipe = chat_completion.choices[0].message.content
+
+        parts = recipe.split("**")
+        title = parts[1].strip()
+        ingredients = parts[4].strip()
+        directions = parts[6].strip()
+
+        recipe_dict = {}
+        recipe_dict['title'] = title
+        recipe_dict['ingredients'] = ingredients
+        recipe_dict['directions'] = directions
+
+        recipe_list.append(recipe_dict)
 
     return recipe_list
-
-
-# # ORIGINAL, DO NOT REMOVE until new one has been tested.
-# def recipe_generator(ingredients_lists):
-
-#     '''
-#     Takes ingredients_list from muse_comb and returns the actual recipes with titles, ingredients, and directions.
-
-#     Updates:
-#     5/22/2024 by TJ:
-#     - Added config.py file to protect API Key.
-
-#     Inputs (1):
-#     ingredients_list (from: muse_comb) = 1 list of 3 lists, containing the 3 ingredients combinations with highest scores
-
-#     Outputs (1):
-#     recipe_list (to: get_scores, final_recipe) = 1 list of 3 dictionaries with 3 keys each: 'title', 'ingredients', 'directions', containing info for the 3 recipes
-
-#     '''
-
-
-#     api_key = st.secrets['api_key2']
-#     client = Groq(
-#     api_key=api_key
-#     )
-#     recipe_list = []
-
-#     if len(ingredients_lists) == 1:
-#         chat_completion = client.chat.completions.create(
-#             messages=[
-#                 {
-#                     "role": "user",
-#                     "content": f"Suggest one recipe with {ingredients_lists} only. The final format of the output should contain Title, Ingredients and Directions only",
-#                 }
-#             ],
-#             model="llama3-8b-8192",
-#         )
-
-#         recipe = chat_completion.choices[0].message.content
-
-#         parts = recipe.split("**")
-#         title = parts[1].strip()
-#         ingredients = parts[4].strip()
-#         directions = parts[6].strip()
-
-#         recipe_dict = {}
-#         recipe_dict['title'] = title
-#         recipe_dict['ingredients'] = ingredients
-#         recipe_dict['directions'] = directions
-
-#         recipe_list.append(recipe_dict)
-
-#     else:
-#       for i in range(len(ingredients_lists)):
-#         chat_completion = client.chat.completions.create(
-#             messages=[
-#                 {
-#                     "role": "user",
-#                     "content": f"Suggest one recipe with {ingredients_lists[i]} only. The final format of the output should contain Title, Ingredients and Directions only",
-#                 }
-#             ],
-#             model="llama3-8b-8192",
-#         )
-
-#         recipe = chat_completion.choices[0].message.content
-
-#         parts = recipe.split("**")
-#         title = parts[1].strip()
-#         ingredients = parts[4].strip()
-#         directions = parts[6].strip()
-
-#         recipe_dict = {}
-#         recipe_dict['title'] = title
-#         recipe_dict['ingredients'] = ingredients
-#         recipe_dict['directions'] = directions
-
-#         recipe_list.append(recipe_dict)
-
-#     return recipe_list
-# '''--------------------------------------------------------------------------------------------------------------'''
-
-
+'''--------------------------------------------------------------------------------------------------------------'''
 
 def get_scores(recipe_list):
     '''
@@ -313,7 +280,7 @@ def get_final_recipes(recipe_list, scores, model):
     """
 
     final_recipes = {"title": [], "ingredients": [], "directions": []}
-    threshold = 0.2
+    threshold = 0.5
 
     for i in range(len(recipe_list)):
         if scores[i] >= threshold:
