@@ -280,7 +280,7 @@ def get_final_recipes(recipe_list, scores, model):
     """
 
     final_recipes = {"title": [], "ingredients": [], "directions": []}
-    threshold = 0.5
+    threshold = 0.3
 
     for i in range(len(recipe_list)):
         if scores[i] >= threshold:
