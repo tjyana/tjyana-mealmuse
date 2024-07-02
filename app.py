@@ -343,29 +343,29 @@ if st.session_state['page3']:
     # ingredients_list = list of 3 lists
 
 
-# ---------------------------------------------------------
-# ---------------------------------------------------------
-# UNDER CONSTRUCTION
-    recipe_list = []
-    # code snippet to handle recipe_generator with JSONDecodeError
-    attempt = 0
-    retry_limit = 1
-    while attempt < retry_limit:
-        try:
-            recipe_list = recipe_generator(ingredients_list)
-            break
-        except JSONDecodeError as e:
-            attempt += 1
-    print('recipe_list:', recipe_list)# debug code-------------------------------remove later
+# # ---------------------------------------------------------
+# # ---------------------------------------------------------
+# # UNDER CONSTRUCTION
+#     recipe_list = []
+#     # code snippet to handle recipe_generator with JSONDecodeError
+#     attempt = 0
+#     retry_limit = 1
+#     while attempt < retry_limit:
+#         try:
+#             recipe_list = recipe_generator(ingredients_list)
+#             break
+#         except JSONDecodeError as e:
+#             attempt += 1
+#     print('recipe_list:', recipe_list)# debug code-------------------------------remove later
 
-    # recipe_list = recipe_generator(ingredients_list)
+
+
+
+# UNDER CONSTRUCTION
+# ---------------------------------------------------------
+# ---------------------------------------------------------
+    recipe_list = recipe_generator(ingredients_list)
     # recipe_list = list of 3 dictionaries
-
-
-
-# UNDER CONSTRUCTION
-# ---------------------------------------------------------
-# ---------------------------------------------------------
 
 
     scores = get_scores(recipe_list)
