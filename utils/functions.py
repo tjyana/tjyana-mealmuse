@@ -79,7 +79,7 @@ df = pd.read_parquet('data/Halved-DF.parquet.gzip')
     # return ingredients_combinations
 
 
-# TESTING
+# fix to deal with both spaces and commas better
 def combinations_of_two(ingredients_input):
     ingredients_combinations = []
 
@@ -93,16 +93,17 @@ def combinations_of_two(ingredients_input):
 
     # Iterate over all possible combination lengths (from 0 to len(ingredients_list))
     for r in range(len(ingredients_list) + 1):
+
         # Generate combinations of ingredients of length r
         combinations = itertools.combinations(ingredients_list, r)
-        print('combinations_of_two -> combinations:', combinations)
+
         # Iterate over each combination
         for comb in combinations:
             # If the combination length is greater than 1
             if len(comb) > 1:
                 # If the combination length is less than 3, add it to ingredients_combinations
                 if len(comb) < 3:
-                    ingredients_combinations.append(comb)
+                    ingredients_combinations.append([comb])
                 else:
                     # Create a list of all 2-element combinations of the current combination
                     lowerset = []
@@ -121,7 +122,7 @@ def combinations_of_two(ingredients_input):
 
 
 
-# this function is outputting stuff in different formats.
+# adapt to the above input
 def data_query(ingredients_combinations):
     '''
     Scores combinations of ingredients.
@@ -138,8 +139,9 @@ def data_query(ingredients_combinations):
 
     data = []
     for combination in ingredients_combinations:
+        print('data_query -> combination:', combination)
         if len(combination) < 3:
-            ingredient1, ingredient2 = combination
+            ingredient1, ingredient2 = combination[0] # splitting issue here
             query_str = f'(ingredient1 == "{ingredient1}" & ingredient2 == "{ingredient2}") | (ingredient1 == "{ingredient2}" & ingredient2 == "{ingredient1}")'
             score = df.query(query_str)['scaled_col'].values
             if len(score) > 0:
@@ -201,7 +203,7 @@ def muse_comb(df_comb):
 
     print('muse_comb -> df_comb -> columns in df_comb', df_comb.columns)
     print('muse_comb -> df_comb -> len(df_comb["Combination"])', len(df_comb['Combination']))
-    print('muse_comb -> df_comb -> df_comb["Combination"]', df_comb['Combination'][0:10])
+    print('muse_comb -> df_comb -> df_comb["Combination"]', df_comb['Combination'])
     # sum upp all scores for each combination in a new column "Sum"
     df_comb["Sum"] = df_comb["Score"].apply(calculate_sum)
 
