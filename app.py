@@ -360,9 +360,7 @@ if st.session_state['page3']:
     #     'directions': list of 3 strings, each string containing recipe directions
     print('final_recipes:', final_recipes)
 
-    image_urls = image_generator(final_recipes)
-    # image_urls = list of 3 strings, each string containing image url
-    print('image_urls:', image_urls)
+
 
 
     # # Columns
@@ -419,6 +417,7 @@ if st.session_state['page3']:
 
         dishes = [f'Dish {n+1}' for n in range(len(final_recipes['title']))]
 
+        placeholders = []
         for index, tab in enumerate(st.tabs(dishes)):
 
             with tab:
@@ -433,7 +432,19 @@ if st.session_state['page3']:
                     st.subheader('Directions')
                     if index < len(final_recipes['directions']):
                         st.write(final_recipes['directions'][index])
-                with col3:
+                placeholder = col3.empty()
+                placeholders.append(placeholder)
+
+
+        image_urls = image_generator(final_recipes)
+
+
+        # image_urls = list of 3 strings, each string containing image url
+        print('image_urls:', image_urls)
+
+        # parse out to run after the above
+        for index, placeholder in enumerate(placeholders):
+                with placeholder:
                     st.subheader('Image')
                     if index < len(image_urls):
                         st.image(image_urls[index], width=200)
