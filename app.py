@@ -169,11 +169,11 @@ if st.session_state['page2']:
     col2.markdown("<h2 style='text-align: center; color: grey; font-size:20px'>Turn What You have to What You Crave &#128512; </h2>", unsafe_allow_html=True)
 
 
-    st.session_state['ingredients'] = col2.text_input('', help='Enter the list of ingredients:')
+    st.session_state['ingredients'] = col2.text_input('', help='Enter your list of ingredients, separated by commas:')
 
     evaluate_button = col2.button('Recipes Muse')
 
-    col2.markdown("<h3 style='text-align: center; color: grey; font-size:20px'>An AI-powered recipe generator that utilizes Machine Learning to offer customized cooking suggestions based on avalable ingredients</h3>", unsafe_allow_html=True)
+    col2.markdown("<h3 style='text-align: center; color: grey; font-size:20px'>An AI-powered recipe generator that utilizes Machine Learning to offer customized cooking suggestions based on available ingredients</h3>", unsafe_allow_html=True)
 
     # # Images left, right and title background
     # st.image('mealmuse_images/circleobjectleft.png')
@@ -335,28 +335,34 @@ if st.session_state['page3']:
 
     ingredients_combinations = combinations_of_two(ingredients_input)
     # ingredients_combinations = list containing tuples and lists
+    print('ingredients_combinations:', ingredients_combinations)
 
     df_comb = data_query(ingredients_combinations)
     # df_comb = datafrome with 2 columns: 'Combination' and 'Score'
+    print('df_comb:', df_comb)
 
     ingredients_list = muse_comb(df_comb)
     # ingredients_list = list of 3 lists
+    print('ingredients_list:', ingredients_list)
 
     recipe_list = recipe_generator(ingredients_list)
     # recipe_list = list of 3 dictionaries
+    print('recipe_list:', recipe_list)
 
     scores = get_scores(recipe_list)
     # scores = list of 3 integers
+    print('scores:', scores)
 
     final_recipes = get_final_recipes(recipe_list, scores, model)
     # final_recipes = 1 dictionary with 3 keys:
     #     'title': list of 3 strings, each string containing recipe title
     #     'ingredients': list of 3 strings, each string containing recipe ingredients
     #     'directions': list of 3 strings, each string containing recipe directions
+    print('final_recipes:', final_recipes)
 
     image_urls = image_generator(final_recipes)
     # image_urls = list of 3 strings, each string containing image url
-
+    print('image_urls:', image_urls)
 
 
     # # Columns
