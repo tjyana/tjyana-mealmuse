@@ -335,30 +335,25 @@ if st.session_state['page3']:
 
     ingredients_combinations = combinations_of_two(ingredients_input)
     # ingredients_combinations = list containing tuples and lists
-    print('ingredients_combinations:', ingredients_combinations)
 
     df_comb = data_query(ingredients_combinations)
     # df_comb = datafrome with 2 columns: 'Combination' and 'Score'
-    print('df_comb:', df_comb)
 
     ingredients_list = muse_comb(df_comb)
     # ingredients_list = list of 3 lists
-    print('ingredients_list:', ingredients_list)
 
     recipe_list = recipe_generator(ingredients_list)
     # recipe_list = list of 3 dictionaries
-    print('recipe_list:', recipe_list)
 
     scores = get_scores(recipe_list)
     # scores = list of 3 integers
-    print('scores:', scores)
 
     final_recipes = get_final_recipes(recipe_list, scores, model)
     # final_recipes = 1 dictionary with 3 keys:
     #     'title': list of 3 strings, each string containing recipe title
     #     'ingredients': list of 3 strings, each string containing recipe ingredients
     #     'directions': list of 3 strings, each string containing recipe directions
-    print('final_recipes:', final_recipes)
+
 
 
 
@@ -435,13 +430,7 @@ if st.session_state['page3']:
                 placeholder = col3.empty()
                 placeholders.append(placeholder)
 
-
-
-
-        # image_urls = list of 3 strings, each string containing image url
-
-
-        # parse out to run after the above
+        # image_urls -> list of 3 strings, each string containing image url
         for index, placeholder in enumerate(placeholders):
             with placeholder:
                 with st.spinner('Loading images...'):

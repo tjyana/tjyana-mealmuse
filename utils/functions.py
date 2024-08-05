@@ -80,7 +80,17 @@ df = pd.read_parquet('data/Halved-DF.parquet.gzip')
 
 
 # fix to deal with both spaces and commas better
-def combinations_of_two(ingredients_input):
+def combinations_of_two(ingredients_input: str) -> list:
+    '''
+    The function generates all unique pairs of ingredients that can be made from the input list of ingredients.
+    NOTE FOR FRONT-END: The output of this function is the input for data_query()
+
+    Inputs (1):
+    ingredients_input (from: user input in app) =  single string with ingredients separated by commas and a space
+
+    Outputs (1):
+    ingredients_combinations (to: data_query) = 1 list of lists of tuples, containing various ingredient combinations
+    '''
     ingredients_combinations = []
 
     # Split the input string by commas and strip whitespace
@@ -123,7 +133,7 @@ def combinations_of_two(ingredients_input):
 
 
 # adapt to the above input
-def data_query(ingredients_combinations):
+def data_query(ingredients_combinations: list) -> pd.DataFrame:
     '''
     Scores combinations of ingredients.
     Added a penalty of -5 for pairings that are not in the dataframe
@@ -135,7 +145,6 @@ def data_query(ingredients_combinations):
     df_comb (to: muse_comb) = 1 datafrome with columns 'Combination' and 'Score', containing ingredient combinations and their scores as a dataframe  (for 4 ingredients: all 6 combinations and their respective scores)
 
     '''
-
 
     data = []
     for combination in ingredients_combinations:
@@ -165,11 +174,9 @@ def data_query(ingredients_combinations):
     return df_comb
 
 
-###################
-# HUGE PROBLEM HERE
-# something is wrong with muse_comb
+
 '''-----------------------------------------------------------------------------------------------------------'''
-def muse_comb(df_comb):
+def muse_comb(df_comb: pd.DataFrame) -> list:
     '''
     The function calculates the sum of the "Score" values and returns the three combinations with the largest sums
 
@@ -182,39 +189,32 @@ def muse_comb(df_comb):
 
     '''
 
-    def calculate_sum(array):
+    # function to calculate the sum of the scores
+    def calculate_sum(array: list) -> int:
         return sum(array)
 
-
-    # IS IT HERE?????????????
-    # THIS FUNCTION IS CUTTING UP TUPLES INTO SINGLE LETTERS
-    def ingredients_to_lists(lists):
-        # list of lists of tuples are fed into the function
-        # eg. [[('yeast', 'mustard'), ('butter', 'sage'')], [('eggs', 'cabbage'), ('pepper', 'pork')], [('cabbage', 'chicken'), ('pork', 'flour')]]
-        ingredients_list = [] # initialize
+    # function to convert the ingredients to lists
+    def ingredients_to_lists(lists: list) -> list:
+        ingredients_list = []
         for i in range(3):
-            tmp_list = [] # initialize
+            tmp_list = []
             for x in lists[i]:
-                tmp_list.append(x[0]) # append first element
-                tmp_list.append(x[1]) # append second element
+                tmp_list.append(x[0])
+                tmp_list.append(x[1])
             ingredients_list.append(list(set(tmp_list)))
 
         return ingredients_list
 
-    print('muse_comb -> df_comb -> columns in df_comb', df_comb.columns)
-    print('muse_comb -> df_comb -> len(df_comb["Combination"])', len(df_comb['Combination']))
-    print('muse_comb -> df_comb -> df_comb["Combination"]', df_comb['Combination'])
-    # sum upp all scores for each combination in a new column "Sum"
+    # sum up all scores for each combination in a new column "Sum"
     df_comb["Sum"] = df_comb["Score"].apply(calculate_sum)
 
     # select top 3 rows with largest sums
     max_values = df_comb.nlargest(3, "Sum")
-    print('muse_comb -> max_values (first one):', max_values)
 
     # take only the "Combination" column
     max_values = max_values["Combination"].reset_index(drop=True)
-    print('muse_comb -> max_values (second one):', max_values)
 
+    # convert the 3 ingredient combinations to lists
     ingredients_lists = ingredients_to_lists(max_values)
 
     return ingredients_lists
@@ -222,14 +222,10 @@ def muse_comb(df_comb):
 '''--------------------------------------------------------------------------------------------------------------'''
 
 
-def recipe_generator(ingredients_lists):
+def recipe_generator(ingredients_lists: list) -> list:
 
     '''
     Takes ingredients_list from muse_comb and returns the actual recipes with titles, ingredients, and directions.
-
-    Updates:
-    5/22/2024 by TJ:
-    - Added config.py file to protect API Key.
 
     Inputs (1):
     ingredients_list (from: muse_comb) = 1 list of 3 lists, containing the 3 ingredients combinations with highest scores
@@ -238,7 +234,6 @@ def recipe_generator(ingredients_lists):
     recipe_list (to: get_scores, final_recipe) = 1 list of 3 dictionaries with 3 keys each: 'title', 'ingredients', 'directions', containing info for the 3 recipes
 
     '''
-
 
     api_key = st.secrets['api_key2']
     client = Groq(
@@ -300,7 +295,7 @@ def recipe_generator(ingredients_lists):
     return recipe_list
 '''--------------------------------------------------------------------------------------------------------------'''
 
-def get_scores(recipe_list):
+def get_scores(recipe_list: list) -> list:
     '''
     Gets the score of each recipe.
 
@@ -328,7 +323,7 @@ def get_scores(recipe_list):
 
 '''--------------------------------------------------------------------------------------------------------------'''
 
-def get_final_recipes(recipe_list, scores, model):
+def get_final_recipes(recipe_list: list, scores: list, model: object) -> dict:
 
     """
     1. Evaluates whether the score of a recipe passes or fails the threshold.
@@ -390,7 +385,7 @@ def get_final_recipes(recipe_list, scores, model):
 
 
 
-def image_generator(final_recipes):
+def image_generator(final_recipes: dict) -> list:
 
     '''
     Generates images for each recipe title.
