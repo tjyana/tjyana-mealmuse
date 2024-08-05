@@ -436,15 +436,17 @@ if st.session_state['page3']:
                 placeholders.append(placeholder)
 
 
-        image_urls = image_generator(final_recipes)
 
 
         # image_urls = list of 3 strings, each string containing image url
-        print('image_urls:', image_urls)
+
 
         # parse out to run after the above
         for index, placeholder in enumerate(placeholders):
-                with placeholder:
+            with placeholder:
+                with st.spinner('Loading images...'):
+                    image_urls = image_generator(final_recipes)
+                    print('image_urls:', image_urls)
                     st.subheader('Image')
                     if index < len(image_urls):
                         st.image(image_urls[index], width=200)
