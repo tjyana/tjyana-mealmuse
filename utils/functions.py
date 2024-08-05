@@ -14,6 +14,11 @@ import matplotlib.image as mpimg
 from gradio_client import Client
 from groq import Groq
 
+import logging
+
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger()
+
 # Uncomment below and edit apikey for testing locally:
 # import utils.config as config
 
@@ -124,6 +129,8 @@ def combinations_of_two(ingredients_input: str) -> list:
                     # Add the lowerset to ingredients_combinations
                     ingredients_combinations.append(lowerset)
 
+
+    logger.debug('combinations_of_two -> ingredients_combinations:', ingredients_combinations)
     return ingredients_combinations
 
 
@@ -171,6 +178,8 @@ def data_query(ingredients_combinations: list) -> pd.DataFrame:
 
     print('data_query -> data:', data)
     df_comb = pd.DataFrame(data)
+
+    logger.debug('data_query -> df_comb:', df_comb)
     return df_comb
 
 
@@ -217,6 +226,7 @@ def muse_comb(df_comb: pd.DataFrame) -> list:
     # convert the 3 ingredient combinations to lists
     ingredients_lists = ingredients_to_lists(max_values)
 
+    logger.debug('muse_comb -> ingredients_lists:', ingredients_lists)
     return ingredients_lists
 
 '''--------------------------------------------------------------------------------------------------------------'''
@@ -292,6 +302,7 @@ def recipe_generator(ingredients_lists: list) -> list:
 
         recipe_list.append(recipe_dict)
 
+    logger.debug('recipe_generator -> recipe_list:', recipe_list)
     return recipe_list
 '''--------------------------------------------------------------------------------------------------------------'''
 
@@ -318,6 +329,7 @@ def get_scores(recipe_list: list) -> list:
     for direction in recipe_direction:
         scores.append(model.predict_proba([direction])[0][1])
 
+    logger.debug('get_scores -> scores:', scores)
     return scores
 
 
@@ -379,6 +391,7 @@ def get_final_recipes(recipe_list: list, scores: list, model: object) -> dict:
                 final_recipes["directions"].append(last_recipe[0]["directions"][0][0])
                 break  # Exit the outer loop to prevent an unending loop
 
+    logger.debug('get_final_recipes -> final_recipes:', final_recipes)
     return final_recipes
 
 '''--------------------------------------------------------------------------------------------------------------'''
@@ -414,4 +427,7 @@ def image_generator(final_recipes: dict) -> list:
         file_path = result.split('gradio')[1]
         url = 'https://bytedance-sdxl-lightning.hf.space/file=/tmp/gradio' + file_path
         image_urls.append(url)
+
+
+    logger.debug('image_generator -> image_urls:', image_urls)
     return image_urls
